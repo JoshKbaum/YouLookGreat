@@ -11,8 +11,6 @@ const source = {
 };
 
 export default class CameraComponent extends React.Component {
-  camera = null;
-
   state = {
     hasCameraPermission: null,
     cameraType: Camera.Constants.Type.front,
@@ -23,8 +21,6 @@ export default class CameraComponent extends React.Component {
 
   setFlashMode = flashMode => this.setState({ flashMode });
   setCameraType = cameraType => this.setState({ cameraType });
-
-  // taking photo and playing sound
   handleShortCapture = async () => {
     const photoData = await this.camera.takePictureAsync();
     const { sound } = await Audio.Sound.createAsync(source, {
@@ -37,11 +33,12 @@ export default class CameraComponent extends React.Component {
       captures: [photoData, ...this.state.captures],
     });
   };
-
+  
   async componentWillMount() {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
     this.setState({ hasCameraPermission: status === 'granted' });
   }
+
   render() {
     const {
       hasCameraPermission,
@@ -55,107 +52,121 @@ export default class CameraComponent extends React.Component {
       return <View />;
     } else if (hasCameraPermission === false) {
       return <Text> No access to camera </Text>;
-    } else {
-      return (
-        <View style={{ flex: 1 }}>
-          <Camera
-            style={{ flex: 1, justifyContent: 'space-between' }}
-            type={this.state.cameraType}
-            flashMode={flashMode}
-            ref={camera => (this.camera = camera)}
+    }
+
+    return (
+      <View style={{ flex: 1 }}>
+        <Camera
+          style={{ flex: 1, justifyContent: 'space-between' }}
+          type={this.state.cameraType}
+          flashMode={flashMode}
+          ref={camera => (this.camera = camera)}
+        >
+          <Header
+            style={{
+              position: 'absolute',
+              backgroundColor: 'transparent',
+              borderBottomWidth: 0,
+              left: 15,
+              top: 0,
+              right: 0,
+              zIndex: 1,
+              alignItems: 'center',
+            }}
           >
-            <Header
-              style={{
-                position: 'absolute',
-                backgroundColor: 'transparent',
-                left: 0,
-                top: 0,
-                right: 0,
-                zIndex: 100,
-                alignItems: 'center',
-              }}
-            >
-                {/* CAMERA FLASH BUTTON */}
-              <View style={{ flexDirection: 'row', flex: 4 }}>
-                <Ionicons
-                  name={
-                    flashMode == Camera.Constants.FlashMode.on
-                      ? 'ios-flash'
-                      : 'ios-flash-off'
-                  }
-                  size={30}
-                  style={{
-                    color: 'white',
-                    fontWeight: 'bold',
-                    // justifyContent: 'flex-start',
-                  }}
-                  onPress={() =>
-                    this.setFlashMode(
-                      flashMode === Camera.Constants.FlashMode.on
-                        ? Camera.Constants.FlashMode.off
-                        : Camera.Constants.FlashMode.on
-                    )
-                  }
-                />
-              </View>
-              {/* CAMERA TYPE BUTTON */}
-              <View style={{ flexDirection: 'row', flex: 4 }}>
-                <Icon
-                  onPress={() => {
-                    this.setState({
-                      cameraType:
-                        this.state.cameraType === Camera.Constants.Type.back
-                          ? Camera.Constants.Type.front
-                          : Camera.Constants.Type.back,
-                    });
-                  }}
-                  name="ios-reverse-camera"
-                  style={{
-                    color: 'white',
-                    fontWeight: 'bold',
-                    justifyContent: 'flex-end',
-                  }}
-                />
-              </View>
-            </Header>
-
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                paddingHorizontal: 10,
-                marginBottom: 15,
-              }}
-            >
-              <AntDesign name="setting" size={32} color="white" />
-
-              <Feather
-                name="circle"
-                size={52}
-                color="white"
-                onPress={this.handleShortCapture}
-              />
-              <Icon
-                name="ios-images"
+            {/* CAMERA FLASH BUTTON */}
+            {/* FLEX SPACE SHOULD BE FIXED */}
+            <View style={{ flexDirection: 'row', flex: 9 }}>
+              <Ionicons
+                name={
+                  flashMode == Camera.Constants.FlashMode.on
+                    ? 'ios-flash'
+                    : 'ios-flash-off'
+                }
+                size={30}
                 style={{
                   color: 'white',
                   fontWeight: 'bold',
-                  justifyContent: 'flex-start',
+                  // justifyContent: 'flex-start',
+                }}
+                onPress={() =>
+                  this.setFlashMode(
+                    flashMode === Camera.Constants.FlashMode.on
+                      ? Camera.Constants.FlashMode.off
+                      : Camera.Constants.FlashMode.on
+                  )
+                }
+              />
+            </View>
+            {/* CAMERA TYPE BUTTON */}
+            <View style={{ flexDirection: 'row', flex: 1 }}>
+              <Icon
+                onPress={() => {
+                  this.setState({
+                    cameraType:
+                      this.state.cameraType === Camera.Constants.Type.back
+                        ? Camera.Constants.Type.front
+                        : Camera.Constants.Type.back,
+                  });
+                }}
+                name="ios-reverse-camera"
+                style={{
+                  color: 'white',
+                  fontWeight: 'bold',
+                  justifyContent: 'flex-end',
                 }}
               />
             </View>
-          </Camera>
-        </View>
-      );
-    }
+          </Header>
+
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              paddingHorizontal: 10,
+              marginBottom: 15,
+            }}
+          >
+              {/* SETTINGS BUTTON */}
+            <AntDesign
+              name="setting"
+              size={32}
+              color="white"
+            //   THIS MAY NOT BE THE BEST ANSWER
+              onPress={() => this.props.navigation.navigate('Settings')}
+            />
+             {/* CIRCLE TAKE PHOTO BUTTON */}
+            <Feather
+              name="circle"
+              size={52}
+              color="white"
+              onPress={this.handleShortCapture}
+            />
+            {/* GALLERY BUTTON */}
+            <Icon
+              name="ios-images"
+                          //   THIS MAY NOT BE THE BEST ANSWER
+              onPress={() => this.props.navigation.navigate('Gallery')}
+              style={{
+                color: 'white',
+                fontWeight: 'bold',
+                justifyContent: 'flex-start',
+              }}
+            />
+          </View>
+        </Camera>
+      </View>
+    );
   }
 }
 
 /*
 TODO
+hold photo after taken, ask to save
+take photo button should change on press
 find best icons,
-icon placement,
-icon functionality
+icon placement, spacing
+icon functionality, pagination
 move styling to style page,
 research if permissions are accidentally denied
 customeise permissions text

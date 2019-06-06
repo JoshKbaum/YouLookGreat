@@ -4,6 +4,7 @@ import { Text, View } from 'react-native';
 import { Container, Content } from 'native-base';
 import Swiper from 'react-native-swiper';
 
+import AppNavigator from './src/AppNavigator'
 import Camera from './src/Camera';
 import styles from './src/styles';
 
@@ -17,7 +18,7 @@ export default class App extends React.Component {
               <Text style={styles.text}>Settings</Text>
             </View>
             <View style={{ flex: 1 }}>
-              <Camera />
+            <AppNavigator />
             </View>
             <View style={styles.slideDefault}>
               <Text style={styles.text}>Gallery</Text>
