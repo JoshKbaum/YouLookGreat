@@ -4,7 +4,7 @@ import { Text, View } from 'react-native';
 import { Container, Content } from 'native-base';
 import Swiper from 'react-native-swiper';
 
-import Camera from './src/Camera'
+import Camera from './src/Camera';
 import styles from './src/styles';
 
 export default class App extends React.Component {
@@ -12,11 +12,11 @@ export default class App extends React.Component {
     return (
       <Container>
         <Content>
-          <Swiper index={1}>
+          <Swiper index={1} showsPagination={false}>
             <View style={styles.slideDefault}>
               <Text style={styles.text}>Settings</Text>
             </View>
-            <View style={{flex: 1}}>
+            <View style={{ flex: 1 }}>
               <Camera />
             </View>
             <View style={styles.slideDefault}>
