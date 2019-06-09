@@ -14,13 +14,12 @@ import { Ionicons, AntDesign, Feather } from '@expo/vector-icons';
 
 // import styles from './styles';
 
-
 // audio source
 const source = {
   uri: 'https://freesound.org/data/previews/413/413854_4337854-hq.mp3',
 };
 
-export default class Cam2 extends React.Component {
+export default class CameraComp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -28,6 +27,7 @@ export default class Cam2 extends React.Component {
       hasCameraPermission: null,
       cameraType: Camera.Constants.Type.front,
       flashMode: Camera.Constants.FlashMode.off,
+      newIndex: 0,
     };
   }
 
@@ -53,7 +53,7 @@ export default class Cam2 extends React.Component {
   }
 
   renderCamera() {
-    const { hasCameraPermission, flashMode, path } = this.state;
+    const { hasCameraPermission, flashMode } = this.state;
 
     if (hasCameraPermission === null) {
       return <View />;
@@ -139,9 +139,7 @@ export default class Cam2 extends React.Component {
             name="setting"
             size={32}
             color="white"
-            //   THIS MAY NOT BE THE BEST ANSWER
-            onPress={() => this.props.navigation.navigate('Settings')}
-          />
+            onPress={() => this.props.getSwiper().scrollBy(-1)}/>
           {/* CIRCLE TAKE PHOTO BUTTON */}
           {/* <Feather
               name="circle"
@@ -159,8 +157,7 @@ export default class Cam2 extends React.Component {
           {/* GALLERY BUTTON */}
           <Icon
             name="ios-images"
-            //   THIS MAY NOT BE THE BEST ANSWER
-            onPress={() => this.props.navigation.navigate('Gallery')}
+            onPress={() => this.props.getSwiper().scrollBy(1)}
             style={{
               color: 'white',
               fontWeight: 'bold',
@@ -176,22 +173,31 @@ export default class Cam2 extends React.Component {
     return (
       <View>
         <Image source={{ uri: this.state.path }} style={styles.preview} />
+        {/* CANCEL BUTTON */}
         <Text
           style={styles.cancel}
           onPress={() => this.setState({ path: null })}
         >
           Cancel
         </Text>
+        {/* SAVE BUTTON */}
         <Text
-          style={styles.cancel}
-          //   onPress={() => this.setState({ path: null })}
+          style={styles.save}
+          onPress={() => {
+            CameraRoll.saveToCameraRoll(this.state.path);
+            this.setState({ path: null });
+          }}        >
+          Save
+        </Text>
+        {/* <TouchableHighlight
           onPress={() => {
             CameraRoll.saveToCameraRoll(this.state.path);
             this.setState({ path: null });
           }}
+          style={styles.button}
         >
-          Save
-        </Text>
+          <Text>Save</Text>
+        </TouchableHighlight> */}
       </View>
     );
   }
@@ -229,23 +235,38 @@ const styles = StyleSheet.create({
   cancel: {
     position: 'absolute',
     right: 20,
-    top: 20,
+    bottom: 50,
     backgroundColor: 'transparent',
     color: '#FFF',
     fontWeight: '600',
-    fontSize: 17,
+    fontSize: 23,
     marginTop: 50,
+  },
+  save: {
+    position: 'absolute',
+    left: 20,
+    bottom: 50,
+    backgroundColor: 'transparent',
+    color: '#FFF',
+    fontWeight: '600',
+    fontSize: 23,
+    marginTop: 50,
+  },
+  button: {
+    height: 50,
+    width: 50,
   },
 });
 
 /*
 TODO
-hold photo after taken, ask to save
-take photo button should change on press
 find best icons,
 icon placement, spacing
-icon functionality, pagination
-move styling to style page,
+move styling to style component,
+build settings page
+build gallery page
+fix photo saves sideways
+fix front camera saves mirror
 research if permissions are accidentally denied
 customeise permissions text
 */
