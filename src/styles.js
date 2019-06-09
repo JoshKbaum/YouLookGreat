@@ -54,15 +54,24 @@ export default StyleSheet.create({
     borderColor: 'transparent',
   },
   galleryContainer: {
-    bottom: 100,
+    height: winHeight,
+    width: winWidth,
+    zIndex: 1,
   },
   galleryImageContainer: {
-    width: 75,
-    height: 75,
-    marginRight: 5,
+    height: winHeight,
+    width: winWidth
   },
   galleryImage: {
-    width: 75,
-    height: 75,
+    height: winHeight,
+    width: winWidth,
+    zIndex: 2,
+  },
+  button: {
+    alignItems: 'center',
+    backgroundColor: '#DDDDDD',
+    width: 100,
+    height: 40,
+    margin: 10
   },
 });
