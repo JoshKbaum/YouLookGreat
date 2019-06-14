@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 
 import { Container, Content } from 'native-base';
 import Swiper from 'react-native-swiper';
@@ -12,6 +12,12 @@ import styles from './src/styles';
 // this.swiper = undefined;
 
 export default class App extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      values: [2, 5]
+    }
+  }
   render() {
     return (
       <Container>
@@ -22,9 +28,11 @@ export default class App extends React.Component {
             ref={e => {
               this.swiper = e;
             }}
+            // to disable swiping
+            scrollEnabled={false}
           >
             <View style={styles.slideDefault}>
-              <Settings getSwiper={() => this.swiper} s/>
+              <Settings getSwiper={() => this.swiper} props={{values: this.state.values}} />
             </View>
             <View style={{ flex: 1 }}>
               <CameraComp getSwiper={() => this.swiper} />

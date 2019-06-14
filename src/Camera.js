@@ -14,7 +14,7 @@ import { Ionicons, AntDesign, Feather } from '@expo/vector-icons';
 
 // import styles from './styles';
 
-// audio source
+// AUDIO SOURCE
 const source = {
   uri: 'https://freesound.org/data/previews/413/413854_4337854-hq.mp3',
 };
@@ -27,7 +27,6 @@ export default class CameraComp extends React.Component {
       hasCameraPermission: null,
       cameraType: Camera.Constants.Type.front,
       flashMode: Camera.Constants.FlashMode.off,
-      newIndex: 0,
     };
   }
 
@@ -37,6 +36,7 @@ export default class CameraComp extends React.Component {
     try {
       const data = await this.camera.takePictureAsync();
       this.setState({ path: data.uri });
+
       const { sound } = await Audio.Sound.createAsync(source, {
         shouldPlay: true,
         isLooping: false,
@@ -172,7 +172,7 @@ export default class CameraComp extends React.Component {
   renderImage() {
     return (
       <View>
-        <Image source={{ uri: this.state.path }} style={styles.preview} />
+        <Image source={{ uri: this.state.path }} style={styles.preview}  />
         {/* CANCEL BUTTON */}
         <Text
           style={styles.cancel}
@@ -258,15 +258,3 @@ const styles = StyleSheet.create({
   },
 });
 
-/*
-TODO
-find best icons,
-icon placement, spacing
-move styling to style component,
-build settings page
-build gallery page
-fix photo saves sideways
-fix front camera saves mirror
-research if permissions are accidentally denied
-customeise permissions text
-*/
