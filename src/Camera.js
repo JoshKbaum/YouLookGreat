@@ -27,6 +27,7 @@ export default class CameraComp extends React.Component {
       hasCameraPermission: null,
       cameraType: Camera.Constants.Type.front,
       flashMode: Camera.Constants.FlashMode.off,
+      values: this.props.appProps.values,
     };
   }
 
@@ -47,10 +48,27 @@ export default class CameraComp extends React.Component {
     }
   };
 
-  async componentWillMount() {
+  async componentDidMount() {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
-    this.setState({ hasCameraPermission: status === 'granted' });
+    this.setState({
+      hasCameraPermission: status === 'granted',
+    });
   }
+
+  // updates the props when user changes settings
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.appProps.values !== prevState.values) {
+      return { values: nextProps.appProps.values };
+    } else return null; // Triggers no change in the state
+  }
+
+  // // depreciated
+  // componentWillReceiveProps(nextProps) {
+  //   // update original states
+  //   this.setState({
+  //     values: nextProps.appProps.values,
+  //   });
+  // }
 
   renderCamera() {
     const { hasCameraPermission, flashMode } = this.state;
@@ -139,7 +157,8 @@ export default class CameraComp extends React.Component {
             name="setting"
             size={32}
             color="white"
-            onPress={() => this.props.getSwiper().scrollBy(-1)}/>
+            onPress={() => this.props.getSwiper().scrollBy(-1)}
+          />
           {/* CIRCLE TAKE PHOTO BUTTON */}
           {/* <Feather
               name="circle"
@@ -172,7 +191,7 @@ export default class CameraComp extends React.Component {
   renderImage() {
     return (
       <View>
-        <Image source={{ uri: this.state.path }} style={styles.preview}  />
+        <Image source={{ uri: this.state.path }} style={styles.preview} />
         {/* CANCEL BUTTON */}
         <Text
           style={styles.cancel}
@@ -186,9 +205,11 @@ export default class CameraComp extends React.Component {
           onPress={() => {
             CameraRoll.saveToCameraRoll(this.state.path);
             this.setState({ path: null });
-          }}        >
+          }}
+        >
           Save
         </Text>
+        <Text>this should change: {this.state.values}</Text>
         {/* <TouchableHighlight
           onPress={() => {
             CameraRoll.saveToCameraRoll(this.state.path);
@@ -257,4 +278,3 @@ const styles = StyleSheet.create({
     width: 50,
   },
 });
-
