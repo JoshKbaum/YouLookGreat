@@ -1,32 +1,21 @@
 # *You Look Great*
 
-*An iOS mobile app that compliments you when you take a selfie.* 
+*Currently a Work In Progress.  An iOS mobile app that compliments you when you take a selfie.* 
 
 ## Setup 
 
-download the expo app on your iOS device.  
-expo start.  
-scan QR code with your iOS device.  
+- Download the expo app on your iOS device.  
+- Expo start in terminal. 
+- Scan QR code with your iOS device to launch app on device.  
+
 ### Dependencies
 
-*Provide links and descriptions for the third-party libraries you're having your users install.*
+*"@ptomasroos/react-native-multi-slider": "^1.0.0",*  
+*"expo": "^32.0.0",*  
+*"native-base": "^2.12.1",*  
+*"react": "16.5.0",*  
+*"react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",*  
+*"react-native-swiper": "^1.5.14",*  
+*"react-navigation": "^3.11.0"*  
 
-### Getting started
-
-*What does your user need to know to get everything ready after installation?*
-*Think about databases, config files, and settings.*
-
-## Usage
-
-*Give your users a sense of the workflow for using your project/tool.*
-*For a website this might include code for running locally.*
-*For an API this might include method and parameter specs.*
-
-## Demo
-
-*Grab a simple block of code that makes use of your project/tool and paste it here.*
-
-## Team
-
-* *Name, Organization - role or tasks worked on*
 

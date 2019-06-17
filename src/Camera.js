@@ -16,12 +16,18 @@ import { Ionicons, AntDesign, Feather } from '@expo/vector-icons';
 
 // [[all, one, sounds],[all, two, sounds], [all, three, sounds]...]
 // since expo does not currently allow template literals, this code cannot be DRY
-const allSounds = [[require('../assets/audio/1.mp3')], [require('../assets/audio/2.mp3')], [require('../assets/audio/3.mp3')], [require('../assets/audio/4.mp3')], [require('../assets/audio/5.mp3')], [require('../assets/audio/6.mp3')], [require('../assets/audio/7.mp3')], [require('../assets/audio/8.mp3')], [require('../assets/audio/9.mp3')], [require('../assets/audio/10.mp3')]];
-
-// AUDIO SOURCE
-// const source = {
-//   uri: 'https://freesound.org/data/previews/413/413854_4337854-hq.mp3',
-// };
+const allSounds = [
+  [require('../assets/audio/1.mp3')],
+  [require('../assets/audio/2.mp3')],
+  [require('../assets/audio/3.mp3')],
+  [require('../assets/audio/4.mp3')],
+  [require('../assets/audio/5.mp3')],
+  [require('../assets/audio/6.mp3')],
+  [require('../assets/audio/7.mp3')],
+  [require('../assets/audio/8.mp3')],
+  [require('../assets/audio/9.mp3')],
+  [require('../assets/audio/10.mp3')],
+];
 
 export default class CameraComp extends React.Component {
   constructor(props) {
@@ -32,34 +38,36 @@ export default class CameraComp extends React.Component {
       cameraType: Camera.Constants.Type.front,
       flashMode: Camera.Constants.FlashMode.off,
       values: this.props.appProps.values,
+      compliment: null,
     };
   }
 
   setFlashMode = flashMode => this.setState({ flashMode });
   setCameraType = cameraType => this.setState({ cameraType });
 
+  pickCompliment = () => {
+    const soundBank = allSounds
+      .slice(this.props.appProps.values[0] - 1, this.props.appProps.values[1])
+      .flat();
+    const compliment = soundBank[Math.floor(Math.random() * soundBank.length)];
+    this.setState({ compliment: compliment });
+    this.playCompliment();
+  };
+
+  playCompliment = async () => {
+    const { sound } = await Audio.Sound.createAsync(this.state.compliment, {
+      shouldPlay: true,
+      isLooping: false,
+    });
+    this.sound = sound;
+  };
+
   takePicture = async () => {
     try {
       // take pic
       const data = await this.camera.takePictureAsync();
       this.setState({ path: data.uri });
-      // get sound
-      const soundBank = allSounds
-        .slice(this.props.appProps.values[0] - 1, this.props.appProps.values[1])
-        .flat();
-      // random
-      const compliment = soundBank[Math.floor(Math.random() * soundBank.length)];
-      // console.log('../assets/audio/' + source2 + '.mp3');
-
-      // play sound
-      const { sound } = await Audio.Sound.createAsync(
-        compliment,
-        {
-          shouldPlay: true,
-          isLooping: false,
-        }
-      );
-      this.sound = sound;
+      this.pickCompliment();
     } catch (err) {
       console.log('err: ', err);
     }
@@ -76,16 +84,10 @@ export default class CameraComp extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.appProps.values !== prevState.values) {
       return { values: nextProps.appProps.values };
-    } else return null; // Triggers no change in the state
+    } else {
+      return null; // Triggers no change in the state
+    }
   }
-
-  // // depreciated
-  // componentWillReceiveProps(nextProps) {
-  //   // update original states
-  //   this.setState({
-  //     values: nextProps.appProps.values,
-  //   });
-  // }
 
   renderCamera() {
     const { hasCameraPermission, flashMode } = this.state;
@@ -216,6 +218,10 @@ export default class CameraComp extends React.Component {
         >
           Cancel
         </Text>
+        {/* REPEAT BUTTON */}
+        <Text style={styles.repeat} onPress={() => this.playCompliment()}>
+          Repeat
+        </Text>
         {/* SAVE BUTTON */}
         <Text
           style={styles.save}
@@ -272,6 +278,16 @@ const styles = StyleSheet.create({
   cancel: {
     position: 'absolute',
     right: 20,
+    bottom: 50,
+    backgroundColor: 'transparent',
+    color: '#FFF',
+    fontWeight: '600',
+    fontSize: 23,
+    marginTop: 50,
+  },
+  repeat: {
+    position: 'absolute',
+    right: 130,
     bottom: 50,
     backgroundColor: 'transparent',
     color: '#FFF',
