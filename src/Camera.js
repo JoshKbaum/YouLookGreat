@@ -14,10 +14,14 @@ import { Ionicons, AntDesign, Feather } from '@expo/vector-icons';
 
 // import styles from './styles';
 
+// [[all, one, sounds],[all, two, sounds], [all, three, sounds]...]
+// since expo does not currently allow template literals, this code cannot be DRY
+const allSounds = [[require('../assets/audio/1.mp3')], [require('../assets/audio/2.mp3')], [require('../assets/audio/3.mp3')], [require('../assets/audio/4.mp3')], [require('../assets/audio/5.mp3')], [require('../assets/audio/6.mp3')], [require('../assets/audio/7.mp3')], [require('../assets/audio/8.mp3')], [require('../assets/audio/9.mp3')], [require('../assets/audio/10.mp3')]];
+
 // AUDIO SOURCE
-const source = {
-  uri: 'https://freesound.org/data/previews/413/413854_4337854-hq.mp3',
-};
+// const source = {
+//   uri: 'https://freesound.org/data/previews/413/413854_4337854-hq.mp3',
+// };
 
 export default class CameraComp extends React.Component {
   constructor(props) {
@@ -33,15 +37,28 @@ export default class CameraComp extends React.Component {
 
   setFlashMode = flashMode => this.setState({ flashMode });
   setCameraType = cameraType => this.setState({ cameraType });
+
   takePicture = async () => {
     try {
+      // take pic
       const data = await this.camera.takePictureAsync();
       this.setState({ path: data.uri });
+      // get sound
+      const soundBank = allSounds
+        .slice(this.props.appProps.values[0] - 1, this.props.appProps.values[1])
+        .flat();
+      // random
+      const compliment = soundBank[Math.floor(Math.random() * soundBank.length)];
+      // console.log('../assets/audio/' + source2 + '.mp3');
 
-      const { sound } = await Audio.Sound.createAsync(source, {
-        shouldPlay: true,
-        isLooping: false,
-      });
+      // play sound
+      const { sound } = await Audio.Sound.createAsync(
+        compliment,
+        {
+          shouldPlay: true,
+          isLooping: false,
+        }
+      );
       this.sound = sound;
     } catch (err) {
       console.log('err: ', err);
@@ -209,7 +226,6 @@ export default class CameraComp extends React.Component {
         >
           Save
         </Text>
-        <Text>this should change: {this.state.values}</Text>
         {/* <TouchableHighlight
           onPress={() => {
             CameraRoll.saveToCameraRoll(this.state.path);
