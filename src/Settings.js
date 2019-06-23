@@ -3,6 +3,7 @@ import { View, Text } from 'react-native';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import styles from './styles';
 
+
 export default class settings extends React.Component {
   state = {
     values: this.props.appProps.values,

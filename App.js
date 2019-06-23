@@ -9,6 +9,7 @@ import Settings from './src/Settings';
 import Gallery from './src/Gallery';
 import styles from './src/styles';
 
+
 // this.swiper = undefined;
 
 export default class App extends React.Component {
@@ -54,6 +55,7 @@ export default class App extends React.Component {
                 getSwiper={() => this.swiper}
                 appProps={{ values: this.state.values }}
               />
+             
             </View>
             <View style={styles.slideDefault}>
               <Gallery getSwiper={() => this.swiper} appProps={{ values: this.state.values }} />

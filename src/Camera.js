@@ -1,5 +1,5 @@
 import React from 'react';
-import { Camera, Permissions, Audio } from 'expo';
+import { Camera, Permissions, Audio, MediaLibrary } from 'expo';
 import {
   View,
   Text,
@@ -8,9 +8,12 @@ import {
   StyleSheet,
   Dimensions,
   CameraRoll,
+  Vibration
 } from 'react-native';
+// import * as Haptics from 'expo-haptics';
 import { Header, Icon } from 'native-base';
 import { Ionicons, AntDesign, Feather } from '@expo/vector-icons';
+import FadeIn from 'react-native-fade-in-image';
 
 // import styles from './styles';
 
@@ -45,9 +48,21 @@ export default class CameraComp extends React.Component {
   setFlashMode = flashMode => this.setState({ flashMode });
   setCameraType = cameraType => this.setState({ cameraType });
 
+  takePicture = async () => {
+    try {
+      // take pic
+      const data = await this.camera.takePictureAsync();
+      this.setState({ path: data.uri });
+      this.pickCompliment();
+      Vibration.vibrate(100);
+    } catch (err) {
+      console.log('err: ', err);
+    }
+  };
+
   pickCompliment = () => {
     const soundBank = allSounds
-      .slice(this.props.appProps.values[0] - 1, this.props.appProps.values[1])
+      .slice(this.state.values[0] - 1, this.state.values[1])
       .flat();
     const compliment = soundBank[Math.floor(Math.random() * soundBank.length)];
     this.setState({ compliment: compliment });
@@ -60,17 +75,6 @@ export default class CameraComp extends React.Component {
       isLooping: false,
     });
     this.sound = sound;
-  };
-
-  takePicture = async () => {
-    try {
-      // take pic
-      const data = await this.camera.takePictureAsync();
-      this.setState({ path: data.uri });
-      this.pickCompliment();
-    } catch (err) {
-      console.log('err: ', err);
-    }
   };
 
   async componentDidMount() {
@@ -153,6 +157,8 @@ export default class CameraComp extends React.Component {
                       ? Camera.Constants.Type.front
                       : Camera.Constants.Type.back,
                 });
+                // Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
+
               }}
               name="ios-reverse-camera"
               style={{
@@ -210,7 +216,9 @@ export default class CameraComp extends React.Component {
   renderImage() {
     return (
       <View>
-        <Image source={{ uri: this.state.path }} style={styles.preview} />
+        <FadeIn>
+          <Image source={{ uri: this.state.path }} style={styles.preview} />
+        </FadeIn>
         {/* CANCEL BUTTON */}
         <Text
           style={styles.cancel}
@@ -225,8 +233,19 @@ export default class CameraComp extends React.Component {
         {/* SAVE BUTTON */}
         <Text
           style={styles.save}
-          onPress={() => {
-            CameraRoll.saveToCameraRoll(this.state.path);
+          onPress={async () => {
+            //save to camera roll and copy to 'YLG' album
+            let photo = await MediaLibrary.createAssetAsync(this.state.path);
+            const album = await MediaLibrary.getAlbumAsync('You Look Great');
+            if (album === null){
+              await MediaLibrary.createAlbumAsync(
+                'You Look Great',
+                photo,
+                false
+              );
+            } else {
+              MediaLibrary.addAssetsToAlbumAsync([photo], album, true);
+            }
             this.setState({ path: null });
           }}
         >
@@ -262,6 +281,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   preview: {
+    flex: 1,
+    justifyContent: 'space-between',
+    height: Dimensions.get('window').height,
+    width: Dimensions.get('window').width,
+  },
+  frontPhoto: {
+    transform: [{ rotateY: '180deg' }],
     flex: 1,
     justifyContent: 'space-between',
     height: Dimensions.get('window').height,
