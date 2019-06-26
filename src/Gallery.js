@@ -1,49 +1,51 @@
-// import React from 'react';
-// import { Text, View } from 'react-native';
-// import styles from './styles';
-// import * as ImagePicker from 'expo-image-picker';
-
-// export default class Gallery extends React.Component {
-//   render() {
-//     return (
-//       <View>
-//         <Text style={styles.text}>This is the gallery page. </Text>
-//         <Text onPress={() => this.props.getSwiper().scrollBy(-1)} style={styles.text}>
-//           back to camera
-//         </Text>
-//       </View>
-//     );
-//   }
-// }
-
-import * as React from 'react';
-import { Button, Image, View, Text } from 'react-native';
-import { ImagePicker, Permissions, Constants } from 'expo';
+import React from 'react';
+import {
+  Button,
+  Image,
+  View,
+  Text,
+  CameraRoll,
+  ScrollView,
+} from 'react-native';
+import { Permissions, Constants } from 'expo';
 import styles from './styles';
 
-export default class ImagePickerExample extends React.Component {
+export default class Gallery extends React.Component {
   state = {
-    image: null,
+    images: null,
   };
 
   render() {
-    let { image } = this.state;
+    let { images } = this.state;
 
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Button
-          title="Pick an image from camera roll"
-          onPress={this._pickImage}
+          title="load images from YLG folder"
+          onPress={this._loadImages}
         />
+        {images && (
+          <ScrollView>
+            {this.state.images.map((p, i) => {
+              return (
+                <Image
+                  key={i}
+                  style={{
+                    width: 100,
+                    height: 100,
+                  }}
+                  source={{ uri: p.node.image.uri }}
+                />
+              );
+            })}
+          </ScrollView>
+        )}
         <Text
           onPress={() => this.props.getSwiper().scrollBy(-1)}
           style={styles.text}
         >
           back to camera
         </Text>
-        {image && (
-          <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
-        )}
       </View>
     );
   }
@@ -61,17 +63,21 @@ export default class ImagePickerExample extends React.Component {
     }
   };
 
-  _pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: false,
-      aspect: [4, 3],
-    });
-
-    console.log(result);
-
-    if (!result.cancelled) {
-      this.setState({ image: result.uri });
-    }
+  _loadImages = () => {
+    CameraRoll.getPhotos({
+      first: 20,
+      groupTypes: 'Album',
+      groupName: 'You Look Great',
+    }).then(r => this.setState({ images: r.edges }));
+    // console.log('=====', this.state.images);
   };
 }
+
+/*
+TODO:
+show updated image selection on load
+build grid with pagination
+select photo to view full size
+on full size, repeat compliment
+
+*/
