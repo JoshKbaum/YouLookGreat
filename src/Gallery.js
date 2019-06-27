@@ -6,40 +6,60 @@ import {
   Text,
   CameraRoll,
   ScrollView,
+  TouchableHighlight,
 } from 'react-native';
 import { Permissions, Constants } from 'expo';
 import styles from './styles';
 
+import SelectedPhoto from './SelectedPhoto';
+
 export default class Gallery extends React.Component {
   state = {
     images: null,
+    showSelectedPhoto: false,
+    uri: '',
   };
 
   render() {
-    let { images } = this.state;
-
+    let { showSelectedPhoto, uri, images } = this.state;
+    if (showSelectedPhoto) {
+      return <SelectedPhoto uri={uri} />;
+    }
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Button
-          title="load images from YLG folder"
-          onPress={this._loadImages}
-        />
+      <View style={{ flex: 1 }}>
+        <Text style={styles.text}>Gallery</Text>
+        <Button title="load images from YLG folder" onPress={this._getImages} />
         {images && (
-          <ScrollView>
-            {this.state.images.map((p, i) => {
+          <ScrollView
+            contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}
+          >
+            {this.state.images.map((photo, index) => {
               return (
-                <Image
-                  key={i}
-                  style={{
-                    width: 100,
-                    height: 100,
-                  }}
-                  source={{ uri: p.node.image.uri }}
-                />
+                <TouchableHighlight
+                  key={index}
+                  onPress={() =>
+                    this.setState({
+                      showSelectedPhoto: true,
+                      uri: photo.node.image.uri,
+                    })
+                  }
+                >
+                  <Image
+                    style={{
+                      width: 100,
+                      height: 100,
+                      marginBottom: 5,
+                      marginLeft: 3,
+                      marginRight: 3,
+                    }}
+                    source={{ uri: photo.node.image.uri }}
+                  />
+                </TouchableHighlight>
               );
             })}
           </ScrollView>
         )}
+        {!images && <Text>You have no photos yet!</Text>}
         <Text
           onPress={() => this.props.getSwiper().scrollBy(-1)}
           style={styles.text}
@@ -63,7 +83,7 @@ export default class Gallery extends React.Component {
     }
   };
 
-  _loadImages = () => {
+  _getImages = () => {
     CameraRoll.getPhotos({
       first: 20,
       groupTypes: 'Album',

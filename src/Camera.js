@@ -7,7 +7,6 @@ import {
   TouchableHighlight,
   StyleSheet,
   Dimensions,
-  CameraRoll,
   Vibration
 } from 'react-native';
 // import * as Haptics from 'expo-haptics';
@@ -237,7 +236,7 @@ export default class CameraComp extends React.Component {
             //save to camera roll and copy to 'YLG' album
             let photo = await MediaLibrary.createAssetAsync(this.state.path);
             const album = await MediaLibrary.getAlbumAsync('You Look Great');
-            console.log('-=========', album.locationNames)
+            // console.log('-=========', album.locationNames)
             if (album === null){
               await MediaLibrary.createAlbumAsync(
                 'You Look Great',
