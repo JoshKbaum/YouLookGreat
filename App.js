@@ -9,7 +9,6 @@ import Settings from './src/Settings';
 import Gallery from './src/Gallery';
 import styles from './src/styles';
 
-
 // this.swiper = undefined;
 
 export default class App extends React.Component {
@@ -17,16 +16,22 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       values: [4, 6],
+      newPhotos: 0,
     };
   }
 
   changeRange = newNumbers => {
-    this.setState(
-      {
-        values: newNumbers,
-      }
-    );
+    this.setState({
+      values: newNumbers,
+    });
   };
+
+  refreshGallery = () => {
+    this.setState(prevState => ({
+      newPhotos: prevState.newPhotos + 1
+    }));
+    // console.log('this function is firing', this.state.newPhotos)
+  }
 
   render() {
     return (
@@ -53,12 +58,19 @@ export default class App extends React.Component {
             <View style={{ flex: 1 }}>
               <CameraComp
                 getSwiper={() => this.swiper}
-                appProps={{ values: this.state.values }}
+                appProps={{
+                  values: this.state.values,
+                  refreshGallery: this.refreshGallery,
+                }}
               />
-             
             </View>
             <View style={styles.slideDefault}>
-              <Gallery getSwiper={() => this.swiper} appProps={{ values: this.state.values }} />
+              <Gallery
+                getSwiper={() => this.swiper}
+                appProps={{
+                  newPhotos: this.state.newPhotos,
+                }}
+              />
             </View>
           </Swiper>
         </Content>

@@ -7,7 +7,7 @@ import {
   TouchableHighlight,
   StyleSheet,
   Dimensions,
-  Vibration
+  Vibration,
 } from 'react-native';
 // import * as Haptics from 'expo-haptics';
 import { Header, Icon } from 'native-base';
@@ -54,6 +54,7 @@ export default class CameraComp extends React.Component {
       this.setState({ path: data.uri });
       this.pickCompliment();
       Vibration.vibrate(100);
+      // console.log('this is the photo data', data)
     } catch (err) {
       console.log('err: ', err);
     }
@@ -86,6 +87,7 @@ export default class CameraComp extends React.Component {
   // updates the props when user changes settings
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.appProps.values !== prevState.values) {
+      console.log('camera state is firing');
       return { values: nextProps.appProps.values };
     } else {
       return null; // Triggers no change in the state
@@ -157,7 +159,6 @@ export default class CameraComp extends React.Component {
                       : Camera.Constants.Type.back,
                 });
                 // Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
-
               }}
               name="ios-reverse-camera"
               style={{
@@ -235,9 +236,11 @@ export default class CameraComp extends React.Component {
           onPress={async () => {
             //save to camera roll and copy to 'YLG' album
             let photo = await MediaLibrary.createAssetAsync(this.state.path);
+            // photo.filename = 'tomtom'
+            //  console.log('this photo info is saved', photo)
             const album = await MediaLibrary.getAlbumAsync('You Look Great');
             // console.log('-=========', album.locationNames)
-            if (album === null){
+            if (album === null) {
               await MediaLibrary.createAlbumAsync(
                 'You Look Great',
                 photo,
@@ -246,6 +249,7 @@ export default class CameraComp extends React.Component {
             } else {
               MediaLibrary.addAssetsToAlbumAsync([photo], album, true);
             }
+            this.props.appProps.refreshGallery();
             this.setState({ path: null });
           }}
         >

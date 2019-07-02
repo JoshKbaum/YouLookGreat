@@ -7,23 +7,27 @@ import {
   TouchableHighlight,
 } from 'react-native';
 
-const SelectedPhoto = props => {
-  const { uri } = props;
+const SelectedPhoto = (props) => {
   return (
     <View style={styles.container}>
-      <Image source={{ uri: uri }} style={styles.image} />
+      <Image source={{ uri: props.galleryProps.uri }} style={styles.image} />
       <Text
-          onPress={() => {console.log('repeat compliment')}}
-          style={styles.text}
-        >
-          Repeat Compliment
-        </Text>
+        onPress={() => {
+          console.log('repeat compliment');
+        }}
+        style={styles.text}
+      >
+        Repeat Compliment
+      </Text>
       <Text
-          onPress={() => {console.log(uri)}}
-          style={styles.text}
-        >
-          back to camera
-        </Text>
+        onPress={() => {
+           props.galleryProps.goBackToGallery()
+
+        }}
+        style={styles.text}
+      >
+        back to gallery
+      </Text>
     </View>
   );
 };
@@ -42,7 +46,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 30,
     fontWeight: 'bold',
-},
+  },
 });
 
 export default SelectedPhoto;
