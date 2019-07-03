@@ -20,7 +20,6 @@ export default class Gallery extends React.Component {
       images: null,
       showSelectedPhoto: false,
       uri: '',
-      newPhotos: this.props.appProps.newPhotos,
     };
   }
   // state = {
@@ -38,7 +37,7 @@ export default class Gallery extends React.Component {
 
   _getImages = () => {
     CameraRoll.getPhotos({
-      first: 20,
+      first: 18,
       groupTypes: 'Album',
       groupName: 'You Look Great',
     }).then(r => this.setState({ images: r.edges }));
@@ -114,6 +113,9 @@ export default class Gallery extends React.Component {
                 </TouchableHighlight>
               );
             })}
+            <Text style={styles.text}>Newer</Text>
+
+            <Text style={styles.text}>Older</Text>
           </ScrollView>
         )}
         {!images && <Text>You have no photos yet!</Text>}
@@ -129,4 +131,3 @@ export default class Gallery extends React.Component {
     );
   }
 }
-
