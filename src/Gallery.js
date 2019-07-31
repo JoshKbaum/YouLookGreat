@@ -61,7 +61,7 @@ export default class Gallery extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.appProps.newPhotos !== prevProps.appProps.newPhotos) {
-      console.log('gallery state is firing');
+      // console.log('gallery state is firing');
       this._getImages();
     }
   }
@@ -98,7 +98,7 @@ export default class Gallery extends React.Component {
                       uri: photo.node.image.uri,
                     });
                     // photo.node.image.filename = 'tom';
-                    console.log('this is what the info is', photo);
+                    // console.log('this is what the info is', photo);
                   }}
                 >
                   <Image

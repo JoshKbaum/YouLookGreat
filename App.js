@@ -17,6 +17,8 @@ export default class App extends React.Component {
     this.state = {
       values: [4, 6],
       newPhotos: 0,
+      girl: false,
+      leftHanded: false,
     };
   }
 
@@ -26,6 +28,13 @@ export default class App extends React.Component {
     });
   };
 
+  changeVoice = (decision) => {
+    this.setState({ girl: decision});
+  }
+
+  changeHand = (decision) => {
+    this.setState({leftHanded: decision})
+  }
   refreshGallery = () => {
     this.setState(prevState => ({
       newPhotos: prevState.newPhotos + 1
@@ -52,6 +61,10 @@ export default class App extends React.Component {
                 appProps={{
                   values: this.state.values,
                   changeRange: this.changeRange,
+                  girl: this.state.girl,
+                  changeVoice: this.changeVoice,
+                  leftHanded: this.state.leftHanded,
+                  changeHand: this.changeHand
                 }}
               />
             </View>
@@ -60,6 +73,7 @@ export default class App extends React.Component {
                 getSwiper={() => this.swiper}
                 appProps={{
                   values: this.state.values,
+                  girl: this.state.girl,
                   refreshGallery: this.refreshGallery,
                 }}
               />

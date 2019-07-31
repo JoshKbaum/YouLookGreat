@@ -13,7 +13,7 @@ const SelectedPhoto = (props) => {
       <Image source={{ uri: props.galleryProps.uri }} style={styles.image} />
       <Text
         onPress={() => {
-          console.log('repeat compliment');
+          // console.log('repeat compliment');
         }}
         style={styles.text}
       >

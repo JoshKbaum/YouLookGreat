@@ -5,7 +5,7 @@
 ## Setup 
 
 - Download the expo app on your iOS device.  
-- Expo start in terminal. 
+- Expo Start in terminal. 
 - Scan QR code with your iOS device to launch app on device.  
 
 ### Dependencies

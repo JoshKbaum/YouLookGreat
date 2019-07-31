@@ -41,6 +41,7 @@ export default class CameraComp extends React.Component {
       flashMode: Camera.Constants.FlashMode.off,
       values: this.props.appProps.values,
       compliment: null,
+      girl: this.props.appProps.girl,
     };
   }
 
@@ -226,6 +227,13 @@ export default class CameraComp extends React.Component {
         >
           Cancel
         </Text>
+        {/* FLIP BUTTON */}
+        <Text
+          style={styles.flip}
+          onPress={() => this.setState({ path: null })}
+        >
+          Flip
+        </Text>
         {/* REPEAT BUTTON */}
         <Text style={styles.repeat} onPress={() => this.playCompliment()}>
           Repeat
@@ -319,6 +327,16 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 130,
     bottom: 50,
+    backgroundColor: 'transparent',
+    color: '#FFF',
+    fontWeight: '600',
+    fontSize: 23,
+    marginTop: 50,
+  },
+  flip: {
+    position: 'absolute',
+    right: 130,
+    bottom: 100,
     backgroundColor: 'transparent',
     color: '#FFF',
     fontWeight: '600',
