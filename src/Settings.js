@@ -8,28 +8,25 @@ export default class settings extends React.Component {
   state = {
     values: this.props.appProps.values,
     girl: this.props.appProps.girl,
-    leftHanded: this.props.appProps.leftHanded
+    leftHanded: this.props.appProps.leftHanded,
   };
 
-  multiSliderValuesChange = values => {
-    this.setState({
-      values,
-    });
-    console.log('+++++', this.state);
+  // FUNCTIONS
+  orientationChange = () => {
+    this.setState({ leftHanded: !this.state.leftHanded });
   };
 
   genderChange = () => {
     this.setState({ girl: !this.state.girl });
   };
 
-  // getButtonText() {
-  //   return this.state.switchOn3 ? 'Boy' : 'Girl';
-  // }
-
-  orientationChange = () => {
-    this.setState({ leftHanded: !this.state.leftHanded });
+  multiSliderValuesChange = values => {
+    this.setState({
+      values,
+    });
   };
 
+  // BUTTON TEXT
   getRightTextGender() {
     return this.state.girl ? '' : 'Boy';
   }
@@ -39,11 +36,11 @@ export default class settings extends React.Component {
   }
 
   getRightTextHand() {
-    return this.state.girl ? '' : 'Right';
+    return this.state.leftHanded ? 'Left' : '';
   }
 
   getLeftTextHand() {
-    return this.state.girl ? 'Left' : '';
+    return this.state.leftHanded ? '' : 'Right';
   }
 
   render() {
@@ -87,7 +84,7 @@ export default class settings extends React.Component {
             borderRadius: 27.5,
             backgroundColor: 'blue', // rgb(102,134,205)
           }}
-          switchOn={this.state.leftHanded}
+          switchOn={!this.state.leftHanded}
           onPress={() => {
             this.orientationChange();
             console.log('+++', this.state);
@@ -103,7 +100,6 @@ export default class settings extends React.Component {
             marginTop: 20,
           }}
         />
-        {/*  */}
         <Text style={styles.text}>Voice:</Text>
         <SwitchToggle
           backTextRight={this.getRightTextGender()}
@@ -158,48 +154,7 @@ export default class settings extends React.Component {
             marginTop: 20,
           }}
         />
-        {/* <SwitchToggle
-          buttonText={this.getButtonText()}
-          backTextRight={this.getRightText()}
-          backTextLeft={this.getLeftText()}
-          
-          type={1}
-          buttonStyle={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'absolute'
-          }}
-          
-          rightContainerStyle={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
-          leftContainerStyle={{flex: 1, alignItems: 'center', justifyContent: 'flex-start'}}
-        
-          buttonTextStyle={{fontSize: 20}}
-          textRightStyle={{fontSize: 20}}
-          textLeftStyle={{fontSize: 20}}
-        
-          containerStyle={{
-            marginTop: 16,
-            width: 160,
-            height: 65,
-            borderRadius: 30,
-            padding: 5,
-          }}
-          backgroundColorOn='#fff'
-          backgroundColorOff='#fff'
-          circleStyle={{
-            width: 80,
-            height: 55,
-            borderRadius: 27.5,
-            backgroundColor: 'blue', // rgb(102,134,205)
-          }}
-          switchOn={this.state.switchOn3}
-          onPress={this.onPress3}
-          circleColorOff='#e5e1e0'
-          circleColorOn='#e5e1e0'
-          duration={500}
-        /> */}
         <Text style={styles.text}>Enthusiasm:</Text>
-
         <MultiSlider
           values={[this.state.values[0], this.state.values[1]]}
           sliderLength={280}
@@ -223,6 +178,7 @@ export default class settings extends React.Component {
             this.props.appProps.changeRange(this.state.values);
             this.props.appProps.changeVoice(this.state.girl);
             this.props.appProps.changeHand(this.state.leftHanded);
+            console.log('this was pressed', this.state);
           }}
           style={styles.text}
         >

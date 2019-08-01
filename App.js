@@ -22,7 +22,7 @@ export default class App extends React.Component {
     };
   }
 
-  changeRange = newNumbers => {
+  changeRange = (newNumbers) => {
     this.setState({
       values: newNumbers,
     });
@@ -74,6 +74,7 @@ export default class App extends React.Component {
                 appProps={{
                   values: this.state.values,
                   girl: this.state.girl,
+                  leftHanded: this.state.leftHanded,
                   refreshGallery: this.refreshGallery,
                 }}
               />

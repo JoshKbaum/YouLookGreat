@@ -42,6 +42,7 @@ export default class CameraComp extends React.Component {
       values: this.props.appProps.values,
       compliment: null,
       girl: this.props.appProps.girl,
+      leftHanded: this.props.appProps.leftHanded,
     };
   }
 
@@ -85,7 +86,7 @@ export default class CameraComp extends React.Component {
     });
   }
 
-  // updates the props when user changes settings
+  // updates the props when user changes settings, should prob update this for left/right boy/girl
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.appProps.values !== prevState.values) {
       console.log('camera state is firing');
@@ -103,7 +104,6 @@ export default class CameraComp extends React.Component {
     } else if (hasCameraPermission === false) {
       return <Text> No access to camera </Text>;
     }
-
     return (
       <Camera
         ref={camera => {
@@ -113,21 +113,62 @@ export default class CameraComp extends React.Component {
         flashMode={flashMode}
         type={this.state.cameraType}
       >
-        <Header
+       
+        {/* HUD */}
+        <View
           style={{
-            position: 'absolute',
-            backgroundColor: 'transparent',
-            borderBottomWidth: 0,
-            left: 15,
-            top: 0,
-            right: 0,
-            zIndex: 1,
-            alignItems: 'center',
+            flexDirection: 'column',
+            // flex-start = left, flex-end = right
+            alignItems: 'flex-end',
+            justifyContent: 'center',
+            //distance from the edge of screen
+            paddingHorizontal: 12,
+            marginBottom: 15,
+            height: Dimensions.get('window').height - 100,
+            // backgroundColor: "red"
           }}
         >
-          {/* CAMERA FLASH BUTTON */}
-          {/* FLEX SPACE SHOULD BE FIXED */}
-          <View style={{ flexDirection: 'row', flex: 9 }}>
+          {/* SETTINGS BUTTON */}
+          <AntDesign
+            name="setting"
+            size={32}
+            onPress={() => this.props.getSwiper().scrollBy(-1)}
+            style={{
+              color: 'white',
+              fontWeight: 'bold',
+              marginTop: 170,
+            }}
+          />
+          {/* GALLERY BUTTON */}
+          <Icon
+            name="ios-images"
+            onPress={() => this.props.getSwiper().scrollBy(1)}
+            style={{
+              color: 'white',
+              fontWeight: 'bold',
+              justifyContent: 'flex-start',
+              marginTop: 10,
+            }}
+          />
+          {/* CAMERA TYPE BUTTON */}
+          <Icon
+              onPress={() => {
+                this.setState({
+                  cameraType:
+                    this.state.cameraType === Camera.Constants.Type.back
+                      ? Camera.Constants.Type.front
+                      : Camera.Constants.Type.back,
+                });
+              }}
+              name="ios-reverse-camera"
+              style={{
+                color: 'white',
+                fontWeight: 'bold',
+                justifyContent: 'flex-end',
+                marginTop: 10,
+              }}
+            />
+            {/* FLASH BUTTON */}
             <Ionicons
               name={
                 flashMode == Camera.Constants.FlashMode.on
@@ -138,7 +179,7 @@ export default class CameraComp extends React.Component {
               style={{
                 color: 'white',
                 fontWeight: 'bold',
-                // justifyContent: 'flex-start',
+                marginTop: 10,
               }}
               onPress={() =>
                 this.setFlashMode(
@@ -148,44 +189,17 @@ export default class CameraComp extends React.Component {
                 )
               }
             />
-          </View>
-          {/* CAMERA TYPE BUTTON */}
-          <View style={{ flexDirection: 'row', flex: 1 }}>
-            <Icon
-              onPress={() => {
-                this.setState({
-                  cameraType:
-                    this.state.cameraType === Camera.Constants.Type.back
-                      ? Camera.Constants.Type.front
-                      : Camera.Constants.Type.back,
-                });
-                // Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
-              }}
-              name="ios-reverse-camera"
-              style={{
-                color: 'white',
-                fontWeight: 'bold',
-                justifyContent: 'flex-end',
-              }}
-            />
-          </View>
-        </Header>
+        </View>
+        {/* CIRCLE TAKE PHOTO BUTTON */}
         <View
           style={{
             flexDirection: 'row',
-            justifyContent: 'space-between',
+            justifyContent: 'center',
             paddingHorizontal: 10,
             marginBottom: 15,
+            zIndex: 1,
           }}
         >
-          {/* SETTINGS BUTTON */}
-          <AntDesign
-            name="setting"
-            size={32}
-            color="white"
-            onPress={() => this.props.getSwiper().scrollBy(-1)}
-          />
-          {/* CIRCLE TAKE PHOTO BUTTON */}
           {/* <Feather
               name="circle"
               size={72}
@@ -199,16 +213,6 @@ export default class CameraComp extends React.Component {
           >
             <View />
           </TouchableHighlight>
-          {/* GALLERY BUTTON */}
-          <Icon
-            name="ios-images"
-            onPress={() => this.props.getSwiper().scrollBy(1)}
-            style={{
-              color: 'white',
-              fontWeight: 'bold',
-              justifyContent: 'flex-start',
-            }}
-          />
         </View>
       </Camera>
     );
@@ -228,10 +232,7 @@ export default class CameraComp extends React.Component {
           Cancel
         </Text>
         {/* FLIP BUTTON */}
-        <Text
-          style={styles.flip}
-          onPress={() => this.setState({ path: null })}
-        >
+        <Text style={styles.flip} onPress={() => this.setState({ path: null })}>
           Flip
         </Text>
         {/* REPEAT BUTTON */}
