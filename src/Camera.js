@@ -78,7 +78,7 @@ export default class CameraComp extends React.Component {
     });
     this.sound = sound;
   };
-
+  
   async componentDidMount() {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
     this.setState({
@@ -86,18 +86,18 @@ export default class CameraComp extends React.Component {
     });
   }
 
-  // updates the props when user changes settings, should prob update this for left/right boy/girl
+  // when options change, this will update the state
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.appProps.values !== prevState.values) {
+    if (nextProps.appProps.values !== prevState.values || nextProps.appProps.leftHanded !== prevState.leftHanded || nextProps.appProps.girl !== prevState.girl ) {
       console.log('camera state is firing');
-      return { values: nextProps.appProps.values };
+      return { values: nextProps.appProps.values, leftHanded: nextProps.appProps.leftHanded, girl: nextProps.appProps.girl  };
     } else {
       return null; // Triggers no change in the state
     }
   }
 
   renderCamera() {
-    const { hasCameraPermission, flashMode } = this.state;
+    const { hasCameraPermission, flashMode, leftHanded, girl } = this.state;
 
     if (hasCameraPermission === null) {
       return <View />;
@@ -113,21 +113,8 @@ export default class CameraComp extends React.Component {
         flashMode={flashMode}
         type={this.state.cameraType}
       >
-       
         {/* HUD */}
-        <View
-          style={{
-            flexDirection: 'column',
-            // flex-start = left, flex-end = right
-            alignItems: 'flex-end',
-            justifyContent: 'center',
-            //distance from the edge of screen
-            paddingHorizontal: 12,
-            marginBottom: 15,
-            height: Dimensions.get('window').height - 100,
-            // backgroundColor: "red"
-          }}
-        >
+        <View style={[leftHanded ? styles.leftHand : styles.rightHand ]}>
           {/* SETTINGS BUTTON */}
           <AntDesign
             name="setting"
@@ -152,43 +139,43 @@ export default class CameraComp extends React.Component {
           />
           {/* CAMERA TYPE BUTTON */}
           <Icon
-              onPress={() => {
-                this.setState({
-                  cameraType:
-                    this.state.cameraType === Camera.Constants.Type.back
-                      ? Camera.Constants.Type.front
-                      : Camera.Constants.Type.back,
-                });
-              }}
-              name="ios-reverse-camera"
-              style={{
-                color: 'white',
-                fontWeight: 'bold',
-                justifyContent: 'flex-end',
-                marginTop: 10,
-              }}
-            />
-            {/* FLASH BUTTON */}
-            <Ionicons
-              name={
-                flashMode == Camera.Constants.FlashMode.on
-                  ? 'ios-flash'
-                  : 'ios-flash-off'
-              }
-              size={30}
-              style={{
-                color: 'white',
-                fontWeight: 'bold',
-                marginTop: 10,
-              }}
-              onPress={() =>
-                this.setFlashMode(
-                  flashMode === Camera.Constants.FlashMode.on
-                    ? Camera.Constants.FlashMode.off
-                    : Camera.Constants.FlashMode.on
-                )
-              }
-            />
+            onPress={() => {
+              this.setState({
+                cameraType:
+                  this.state.cameraType === Camera.Constants.Type.back
+                    ? Camera.Constants.Type.front
+                    : Camera.Constants.Type.back,
+              });
+            }}
+            name="ios-reverse-camera"
+            style={{
+              color: 'white',
+              fontWeight: 'bold',
+              justifyContent: 'flex-end',
+              marginTop: 10,
+            }}
+          />
+          {/* FLASH BUTTON */}
+          <Ionicons
+            name={
+              flashMode == Camera.Constants.FlashMode.on
+                ? 'ios-flash'
+                : 'ios-flash-off'
+            }
+            size={30}
+            style={{
+              color: 'white',
+              fontWeight: 'bold',
+              marginTop: 10,
+            }}
+            onPress={() =>
+              this.setFlashMode(
+                flashMode === Camera.Constants.FlashMode.on
+                  ? Camera.Constants.FlashMode.off
+                  : Camera.Constants.FlashMode.on
+              )
+            }
+          />
         </View>
         {/* CIRCLE TAKE PHOTO BUTTON */}
         <View
@@ -285,7 +272,6 @@ export default class CameraComp extends React.Component {
     );
   }
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -357,5 +343,27 @@ const styles = StyleSheet.create({
   button: {
     height: 50,
     width: 50,
+  },
+  rightHand: {
+    flexDirection: 'column',
+    // flex-start = left, flex-end = right
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    //distance from the edge of screen
+    paddingHorizontal: 12,
+    marginBottom: 15,
+    height: Dimensions.get('window').height - 100,
+    //  backgroundColor: "red"
+  },
+  leftHand: {
+    flexDirection: 'column',
+    // flex-start = left, flex-end = right
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    //distance from the edge of screen
+    paddingHorizontal: 12,
+    marginBottom: 15,
+    height: Dimensions.get('window').height - 100,
+    //  backgroundColor: "red"
   },
 });
