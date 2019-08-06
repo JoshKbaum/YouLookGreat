@@ -87,7 +87,7 @@ export default class settings extends React.Component {
           switchOn={!this.state.leftHanded}
           onPress={() => {
             this.orientationChange();
-            console.log('+++', this.state);
+            // console.log('+++', this.state);
           }}
           circleColorOff="blue"
           circleColorOn="pink"
@@ -141,7 +141,7 @@ export default class settings extends React.Component {
           switchOn={this.state.girl}
           onPress={() => {
             this.genderChange();
-            console.log('+++', this.state);
+            // console.log('+++', this.state);
           }}
           circleColorOff="blue"
           circleColorOn="pink"
@@ -178,7 +178,7 @@ export default class settings extends React.Component {
             this.props.appProps.changeRange(this.state.values);
             this.props.appProps.changeVoice(this.state.girl);
             this.props.appProps.changeHand(this.state.leftHanded);
-            console.log('this was pressed', this.state);
+            // console.log('this was pressed', this.state);
           }}
           style={styles.text}
         >

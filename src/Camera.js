@@ -11,7 +11,12 @@ import {
 } from 'react-native';
 // import * as Haptics from 'expo-haptics';
 import { Header, Icon } from 'native-base';
-import { Ionicons, AntDesign, Feather } from '@expo/vector-icons';
+import {
+  Ionicons,
+  AntDesign,
+  Feather,
+  MaterialIcons,
+} from '@expo/vector-icons';
 import FadeIn from 'react-native-fade-in-image';
 
 // import styles from './styles';
@@ -39,14 +44,18 @@ export default class CameraComp extends React.Component {
       hasCameraPermission: null,
       cameraType: Camera.Constants.Type.front,
       flashMode: Camera.Constants.FlashMode.off,
+      zoom: 0,
       values: this.props.appProps.values,
       compliment: null,
       girl: this.props.appProps.girl,
       leftHanded: this.props.appProps.leftHanded,
+      flip: false,
     };
   }
 
+  // FUNCTIONS
   setFlashMode = flashMode => this.setState({ flashMode });
+
   setCameraType = cameraType => this.setState({ cameraType });
 
   takePicture = async () => {
@@ -78,7 +87,7 @@ export default class CameraComp extends React.Component {
     });
     this.sound = sound;
   };
-  
+
   async componentDidMount() {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
     this.setState({
@@ -88,16 +97,30 @@ export default class CameraComp extends React.Component {
 
   // when options change, this will update the state
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.appProps.values !== prevState.values || nextProps.appProps.leftHanded !== prevState.leftHanded || nextProps.appProps.girl !== prevState.girl ) {
+    if (
+      nextProps.appProps.values !== prevState.values ||
+      nextProps.appProps.leftHanded !== prevState.leftHanded ||
+      nextProps.appProps.girl !== prevState.girl
+    ) {
       console.log('camera state is firing');
-      return { values: nextProps.appProps.values, leftHanded: nextProps.appProps.leftHanded, girl: nextProps.appProps.girl  };
+      return {
+        values: nextProps.appProps.values,
+        leftHanded: nextProps.appProps.leftHanded,
+        girl: nextProps.appProps.girl,
+      };
     } else {
       return null; // Triggers no change in the state
     }
   }
 
   renderCamera() {
-    const { hasCameraPermission, flashMode, leftHanded, girl } = this.state;
+    const {
+      hasCameraPermission,
+      flashMode,
+      leftHanded,
+      girl,
+      zoom,
+    } = this.state;
 
     if (hasCameraPermission === null) {
       return <View />;
@@ -112,33 +135,75 @@ export default class CameraComp extends React.Component {
         style={styles.preview}
         flashMode={flashMode}
         type={this.state.cameraType}
+        zoom={zoom}
       >
         {/* HUD */}
-        <View style={[leftHanded ? styles.leftHand : styles.rightHand ]}>
+        <View style={[leftHanded ? styles.leftHand : styles.rightHand]}>
           {/* SETTINGS BUTTON */}
           <AntDesign
             name="setting"
-            size={32}
+            size={30}
             onPress={() => this.props.getSwiper().scrollBy(-1)}
             style={{
               color: 'white',
               fontWeight: 'bold',
               marginTop: 170,
+              borderWidth: 1,
+              backgroundColor: 'lightcoral',
+              borderColor: '#d6d7da',
+            }}
+          />
+          {/* ZOOM BUTTON */}
+          {/* <Feather
+            name={zoom == 0 ? 'zoom-in' : 'zoom-out'}
+            size={30}
+            onPress={() => {
+              this.setState({
+                zoom: this.state.zoom === 0 ? 0.1 : 0,
+              });
+            }}
+            style={{
+              color: 'white',
+              fontWeight: 'bold',
+              marginTop: 10,
+              borderWidth: 1,
+              borderColor: '#d6d7da',
+            }}
+          /> */}
+          {/* VOLUME BUTTON */}
+          <Feather
+            name="volume"
+            size={32}
+            onPress={() => {
+              console.log('hi');
+            }}
+            style={{
+              color: 'white',
+              fontWeight: 'bold',
+              marginTop: 10,
+              paddingLeft: 7,
+              marginRight: -8,
+              borderWidth: 1,
+              backgroundColor: 'goldenrod',
+              borderColor: '#d6d7da',
             }}
           />
           {/* GALLERY BUTTON */}
           <Icon
-            name="ios-images"
+            name="md-images"
             onPress={() => this.props.getSwiper().scrollBy(1)}
             style={{
               color: 'white',
-              fontWeight: 'bold',
-              justifyContent: 'flex-start',
+              // fontWeight: 'bold',
               marginTop: 10,
+              paddingLeft: 3,
+              // borderWidth: 1,
+              backgroundColor: 'darkolivegreen',
+              borderColor: '#d6d7da',
             }}
           />
           {/* CAMERA TYPE BUTTON */}
-          <Icon
+          <Ionicons
             onPress={() => {
               this.setState({
                 cameraType:
@@ -147,26 +212,33 @@ export default class CameraComp extends React.Component {
                     : Camera.Constants.Type.back,
               });
             }}
-            name="ios-reverse-camera"
+            name="md-reverse-camera"
+            size={30}
             style={{
               color: 'white',
               fontWeight: 'bold',
-              justifyContent: 'flex-end',
               marginTop: 10,
+              paddingLeft: 3,
+              backgroundColor: 'pink',
+              // borderWidth: 1,
+              borderColor: '#d6d7da',
             }}
           />
           {/* FLASH BUTTON */}
-          <Ionicons
+          <MaterialIcons
             name={
               flashMode == Camera.Constants.FlashMode.on
-                ? 'ios-flash'
-                : 'ios-flash-off'
+                ? 'flash-on'
+                : 'flash-off'
             }
             size={30}
             style={{
               color: 'white',
               fontWeight: 'bold',
               marginTop: 10,
+              // borderWidth: 1,
+              backgroundColor: 'darkslateblue',
+              borderColor: '#d6d7da',
             }}
             onPress={() =>
               this.setFlashMode(
@@ -206,10 +278,15 @@ export default class CameraComp extends React.Component {
   }
 
   renderImage() {
+    const { flip } = this.state;
+
     return (
       <View>
         <FadeIn>
-          <Image source={{ uri: this.state.path }} style={styles.preview} />
+          <Image
+            source={{ uri: this.state.path }}
+            style={[styles.preview, flip ? styles.fliper : styles.preview]}
+          />
         </FadeIn>
         {/* CANCEL BUTTON */}
         <Text
@@ -219,7 +296,14 @@ export default class CameraComp extends React.Component {
           Cancel
         </Text>
         {/* FLIP BUTTON */}
-        <Text style={styles.flip} onPress={() => this.setState({ path: null })}>
+        <Text
+          style={styles.flip}
+          onPress={() =>
+            this.setState({
+              flip: this.state.flip === false ? true : false,
+            })
+          }
+        >
           Flip
         </Text>
         {/* REPEAT BUTTON */}
@@ -285,6 +369,13 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').height,
     width: Dimensions.get('window').width,
   },
+  fliper: {
+    flex: 1,
+    justifyContent: 'space-between',
+    height: Dimensions.get('window').height,
+    width: Dimensions.get('window').width,
+    transform: [{ rotateY: '180deg' }],
+  },
   frontPhoto: {
     transform: [{ rotateY: '180deg' }],
     flex: 1,
@@ -325,8 +416,8 @@ const styles = StyleSheet.create({
     right: 130,
     bottom: 100,
     backgroundColor: 'transparent',
-    color: '#FFF',
     fontWeight: '600',
+    color: '#FFF',
     fontSize: 23,
     marginTop: 50,
   },
@@ -353,7 +444,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     marginBottom: 15,
     height: Dimensions.get('window').height - 100,
-    //  backgroundColor: "red"
   },
   leftHand: {
     flexDirection: 'column',
@@ -364,6 +454,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     marginBottom: 15,
     height: Dimensions.get('window').height - 100,
-    //  backgroundColor: "red"
   },
 });
