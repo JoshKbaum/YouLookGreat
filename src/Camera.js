@@ -10,7 +10,7 @@ import {
   Vibration,
 } from 'react-native';
 // import * as Haptics from 'expo-haptics';
-import { Header, Icon } from 'native-base';
+import { Icon } from 'native-base';
 import {
   Ionicons,
   AntDesign,
@@ -36,6 +36,8 @@ const allSounds = [
   [require('../assets/audio/10.mp3')],
 ];
 
+const expSounds = [[1], [2], [3], [4], [5], [6], [7], [8], [9], [10]];
+
 export default class CameraComp extends React.Component {
   constructor(props) {
     super(props);
@@ -50,10 +52,11 @@ export default class CameraComp extends React.Component {
       girl: this.props.appProps.girl,
       leftHanded: this.props.appProps.leftHanded,
       flip: false,
+      mute: false,
     };
   }
 
-  // FUNCTIONS
+  /* FUNCTIONS */
   setFlashMode = flashMode => this.setState({ flashMode });
 
   setCameraType = cameraType => this.setState({ cameraType });
@@ -77,6 +80,7 @@ export default class CameraComp extends React.Component {
       .flat();
     const compliment = soundBank[Math.floor(Math.random() * soundBank.length)];
     this.setState({ compliment: compliment });
+    // console.log('++++', compliment)
     this.playCompliment();
   };
 
@@ -84,6 +88,7 @@ export default class CameraComp extends React.Component {
     const { sound } = await Audio.Sound.createAsync(this.state.compliment, {
       shouldPlay: true,
       isLooping: false,
+      isMuted: this.state.mute,
     });
     this.sound = sound;
   };
@@ -119,6 +124,7 @@ export default class CameraComp extends React.Component {
       flashMode,
       leftHanded,
       girl,
+      mute,
       zoom,
     } = this.state;
 
@@ -140,106 +146,93 @@ export default class CameraComp extends React.Component {
         {/* HUD */}
         <View style={[leftHanded ? styles.leftHand : styles.rightHand]}>
           {/* SETTINGS BUTTON */}
-          <AntDesign
-            name="setting"
-            size={30}
-            onPress={() => this.props.getSwiper().scrollBy(-1)}
+          <TouchableHighlight
             style={{
-              color: 'white',
-              fontWeight: 'bold',
-              marginTop: 170,
-              borderWidth: 1,
+              width: 35,
+              height: 35,
               backgroundColor: 'lightcoral',
-              borderColor: '#d6d7da',
+              marginTop: 170,
             }}
-          />
-          {/* ZOOM BUTTON */}
-          {/* <Feather
-            name={zoom == 0 ? 'zoom-in' : 'zoom-out'}
-            size={30}
+            onPress={() => this.props.getSwiper().scrollBy(-1)}
+          >
+            <View style={{ alignItems: 'center' }}>
+              <AntDesign
+                name="setting"
+                size={30}
+                style={{
+                  color: 'white',
+                  fontWeight: 'bold',
+                  marginTop: 2,
+                  marginLeft: 0.5,
+                }}
+              />
+            </View>
+          </TouchableHighlight>
+          {/* VOLUME BUTTON */}
+          <TouchableHighlight
+            style={{ width: 35, height: 35, backgroundColor: 'goldenrod' }}
             onPress={() => {
               this.setState({
-                zoom: this.state.zoom === 0 ? 0.1 : 0,
+                mute: mute === true ? false : true,
               });
             }}
-            style={{
-              color: 'white',
-              fontWeight: 'bold',
-              marginTop: 10,
-              borderWidth: 1,
-              borderColor: '#d6d7da',
-            }}
-          /> */}
-          {/* VOLUME BUTTON */}
-          <Feather
-            name="volume"
-            size={32}
-            onPress={() => {
-              console.log('hi');
-            }}
-            style={{
-              color: 'white',
-              fontWeight: 'bold',
-              marginTop: 10,
-              paddingLeft: 7,
-              marginRight: -8,
-              borderWidth: 1,
-              backgroundColor: 'goldenrod',
-              borderColor: '#d6d7da',
-            }}
-          />
+          >
+            <View style={{ alignItems: 'center' }}>
+              <Feather
+                name={mute == true ? 'volume' : 'volume-x'}
+                size={32}
+                style={{
+                  color: 'white',
+                  fontWeight: 'bold',
+                }}
+              />
+            </View>
+          </TouchableHighlight>
           {/* GALLERY BUTTON */}
-          <Icon
-            name="md-images"
+          <TouchableHighlight
+            style={{ width: 35, height: 35, backgroundColor: 'darkolivegreen' }}
             onPress={() => this.props.getSwiper().scrollBy(1)}
-            style={{
-              color: 'white',
-              // fontWeight: 'bold',
-              marginTop: 10,
-              paddingLeft: 3,
-              // borderWidth: 1,
-              backgroundColor: 'darkolivegreen',
-              borderColor: '#d6d7da',
-            }}
-          />
+          >
+            <View style={{ alignItems: 'center' }}>
+              <Icon
+                name="md-images"
+                onPress={() => this.props.getSwiper().scrollBy(1)}
+                style={{
+                  color: 'white',
+                  marginTop: 1.4,
+                  marginLeft: 1,
+                }}
+              />
+            </View>
+          </TouchableHighlight>
           {/* CAMERA TYPE BUTTON */}
-          <Ionicons
+          <TouchableHighlight
+            style={{ width: 35, height: 35, backgroundColor: 'pink' }}
             onPress={() => {
               this.setState({
                 cameraType:
                   this.state.cameraType === Camera.Constants.Type.back
                     ? Camera.Constants.Type.front
                     : Camera.Constants.Type.back,
-              });
+                    zoom: this.state.zoom === 0.1 ? 0 : 0,
+                  });
             }}
-            name="md-reverse-camera"
-            size={30}
-            style={{
-              color: 'white',
-              fontWeight: 'bold',
-              marginTop: 10,
-              paddingLeft: 3,
-              backgroundColor: 'pink',
-              // borderWidth: 1,
-              borderColor: '#d6d7da',
-            }}
-          />
+          >
+            <View style={{ alignItems: 'center' }}>
+              <Ionicons
+                name="md-reverse-camera"
+                size={30}
+                style={{
+                  color: 'white',
+                  fontWeight: 'bold',
+                  marginTop: 1.5,
+                }}
+              />
+            </View>
+          </TouchableHighlight>
           {/* FLASH BUTTON */}
-          <MaterialIcons
-            name={
-              flashMode == Camera.Constants.FlashMode.on
-                ? 'flash-on'
-                : 'flash-off'
-            }
-            size={30}
-            style={{
-              color: 'white',
-              fontWeight: 'bold',
-              marginTop: 10,
-              // borderWidth: 1,
-              backgroundColor: 'darkslateblue',
-              borderColor: '#d6d7da',
-            }}
+          <TouchableHighlight
+            style={{ width: 35, height: 35, backgroundColor: 'darkslateblue' }}
             onPress={() =>
               this.setFlashMode(
                 flashMode === Camera.Constants.FlashMode.on
@@ -247,9 +240,48 @@ export default class CameraComp extends React.Component {
                   : Camera.Constants.FlashMode.on
               )
             }
-          />
+          >
+            <View style={{ alignItems: 'center' }}>
+              <MaterialIcons
+                name={
+                  flashMode == Camera.Constants.FlashMode.on
+                    ? 'flash-on'
+                    : 'flash-off'
+                }
+                size={30}
+                style={{
+                  color: 'white',
+                  fontWeight: 'bold',
+                  marginTop: 3,
+                  marginLeft: 2,
+                }}
+              />
+            </View>
+          </TouchableHighlight>
+          {/* BACK ONLY / ZOOM BUTTON */}
+          {this.state.cameraType === Camera.Constants.Type.back ? (
+            <TouchableHighlight
+              style={{ width: 35, height: 35, backgroundColor: 'lightcoral' }}
+              onPress={() => {
+                this.setState({
+                  zoom: this.state.zoom === 0 ? 0.1 : 0,
+                });
+              }}
+            >
+              <View style={{ alignItems: 'center' }}>
+                <Feather
+                  name={zoom == 0 ? 'zoom-in' : 'zoom-out'}
+                  size={30}
+                  style={{
+                    color: 'white',
+                    fontWeight: 'bold',
+                  }}
+                />
+              </View>
+            </TouchableHighlight>
+          ) : null}
         </View>
-        {/* CIRCLE TAKE PHOTO BUTTON */}
+        {/* CAPTURE PHOTO BUTTON */}
         <View
           style={{
             flexDirection: 'row',
@@ -259,12 +291,6 @@ export default class CameraComp extends React.Component {
             zIndex: 1,
           }}
         >
-          {/* <Feather
-              name="circle"
-              size={72}
-              color="white"
-              onPress={this.handleShortCapture}
-            /> */}
           <TouchableHighlight
             style={styles.capture}
             onPress={this.takePicture.bind(this)}
@@ -285,7 +311,7 @@ export default class CameraComp extends React.Component {
         <FadeIn>
           <Image
             source={{ uri: this.state.path }}
-            style={[styles.preview, flip ? styles.fliper : styles.preview]}
+            style={[styles.preview, flip ? styles.mirror : styles.preview]}
           />
         </FadeIn>
         {/* CANCEL BUTTON */}
@@ -307,7 +333,12 @@ export default class CameraComp extends React.Component {
           Flip
         </Text>
         {/* REPEAT BUTTON */}
-        <Text style={styles.repeat} onPress={() => this.playCompliment()}>
+        <Text
+          style={styles.repeat}
+          onPress={() => {
+            this.playCompliment();
+          }}
+        >
           Repeat
         </Text>
         {/* SAVE BUTTON */}
@@ -335,15 +366,6 @@ export default class CameraComp extends React.Component {
         >
           Save
         </Text>
-        {/* <TouchableHighlight
-          onPress={() => {
-            CameraRoll.saveToCameraRoll(this.state.path);
-            this.setState({ path: null });
-          }}
-          style={styles.button}
-        >
-          <Text>Save</Text>
-        </TouchableHighlight> */}
       </View>
     );
   }
@@ -369,7 +391,7 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').height,
     width: Dimensions.get('window').width,
   },
-  fliper: {
+  mirror: {
     flex: 1,
     justifyContent: 'space-between',
     height: Dimensions.get('window').height,
@@ -437,21 +459,19 @@ const styles = StyleSheet.create({
   },
   rightHand: {
     flexDirection: 'column',
-    // flex-start = left, flex-end = right
-    alignItems: 'flex-end',
+    alignItems: 'flex-end', //right
     justifyContent: 'center',
     //distance from the edge of screen
-    paddingHorizontal: 12,
+    paddingHorizontal: 5,
     marginBottom: 15,
     height: Dimensions.get('window').height - 100,
   },
   leftHand: {
     flexDirection: 'column',
-    // flex-start = left, flex-end = right
-    alignItems: 'flex-start',
+    alignItems: 'flex-start', // left
     justifyContent: 'center',
     //distance from the edge of screen
-    paddingHorizontal: 12,
+    paddingHorizontal: 5,
     marginBottom: 15,
     height: Dimensions.get('window').height - 100,
   },

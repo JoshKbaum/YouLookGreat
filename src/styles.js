@@ -7,7 +7,7 @@ export default StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#9DD6EB',
+    backgroundColor: 'darkslateblue',
   },
   text: {
       color: 'white',

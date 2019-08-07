@@ -46,6 +46,7 @@ export default class settings extends React.Component {
   render() {
     return (
       <View>
+        <Text style={styles.text}> Settings</Text>
         <Text style={styles.text}>Orientation:</Text>
         <SwitchToggle
           backTextRight={this.getRightTextHand()}
