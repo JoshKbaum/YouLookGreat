@@ -11,6 +11,12 @@ _Currently a Work In Progress. An iOS mobile app that compliments you when you t
 - `expo start` in terminal.
 - Scan QR code with your iOS device to launch app on device.
 
+## Demo GIF
+
+<p align="center">
+<img src="assets/readme/YLGdemo.gif" width="300"></p>
+
+
 ## Dependencies
 
 *"@ptomasroos/react-native-multi-slider": "^1.0.0",*  
