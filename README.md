@@ -17,7 +17,7 @@ _Currently a Work In Progress. An iOS mobile app that compliments you when you t
 *"expo": "^32.0.0",*  
 *"native-base": "^2.12.1",*  
 *"react": "16.5.0",*  
-*"react-native": "https://github.com/expo/react-native/archive/  sdk-32.0.0.tar.gz",*  
+*"react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",*  
 *"react-native-fade-in-image": "^1.5.0",*  
 *"react-native-fetch-blob": "^0.10.8",*  
 *"react-native-share": "^1.2.1",*  
