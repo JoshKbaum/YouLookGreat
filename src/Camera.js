@@ -7,9 +7,7 @@ import {
   TouchableHighlight,
   StyleSheet,
   Dimensions,
-  Vibration,
 } from 'react-native';
-// import * as Haptics from 'expo-haptics';
 import { Icon } from 'native-base';
 import {
   Ionicons,
@@ -35,7 +33,8 @@ const allSounds = [
   [require('../assets/audio/9.mp3')],
   [require('../assets/audio/10.mp3')],
 ];
-
+const DURATION = 10000;
+const PATTERN = [1000, 2000, 3000];
 const expSounds = [[1], [2], [3], [4], [5], [6], [7], [8], [9], [10]];
 
 export default class CameraComp extends React.Component {
@@ -67,8 +66,8 @@ export default class CameraComp extends React.Component {
       const data = await this.camera.takePictureAsync();
       this.setState({ path: data.uri });
       this.pickCompliment();
-      Vibration.vibrate(100);
       // console.log('this is the photo data', data)
+      // console.log('[][][][][', this.state.path)
     } catch (err) {
       console.log('err: ', err);
     }
@@ -214,8 +213,8 @@ export default class CameraComp extends React.Component {
                   this.state.cameraType === Camera.Constants.Type.back
                     ? Camera.Constants.Type.front
                     : Camera.Constants.Type.back,
-                    zoom: this.state.zoom === 0.1 ? 0 : 0,
-                  });
+                zoom: this.state.zoom === 0.1 ? 0 : 0,
+              });
             }}
           >
             <View style={{ alignItems: 'center' }}>
@@ -275,6 +274,8 @@ export default class CameraComp extends React.Component {
                   style={{
                     color: 'white',
                     fontWeight: 'bold',
+                    marginTop: 1,
+                    marginLeft: 1,
                   }}
                 />
               </View>
@@ -304,14 +305,14 @@ export default class CameraComp extends React.Component {
   }
 
   renderImage() {
-    const { flip } = this.state;
+    // const { flip } = this.state;
 
     return (
       <View>
         <FadeIn>
           <Image
             source={{ uri: this.state.path }}
-            style={[styles.preview, flip ? styles.mirror : styles.preview]}
+            style={[styles.preview, this.state.flip ? styles.mirror : styles.preview]}
           />
         </FadeIn>
         {/* CANCEL BUTTON */}
@@ -350,7 +351,7 @@ export default class CameraComp extends React.Component {
             // photo.filename = 'tomtom'
             //  console.log('this photo info is saved', photo)
             const album = await MediaLibrary.getAlbumAsync('You Look Great');
-            // console.log('-=========', album.locationNames)
+            // console.log('-=========', album)
             if (album === null) {
               await MediaLibrary.createAlbumAsync(
                 'You Look Great',
@@ -361,6 +362,7 @@ export default class CameraComp extends React.Component {
               MediaLibrary.addAssetsToAlbumAsync([photo], album, true);
             }
             this.props.appProps.refreshGallery();
+            // console.log(']]', this.state.path, album)
             this.setState({ path: null });
           }}
         >

@@ -9,10 +9,29 @@ export default StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'darkslateblue',
   },
+  settings: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'darkslateblue',
+  },
+  gallery: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'pink',
+  },
   text: {
-      color: 'white',
-      fontSize: 30,
-      fontWeight: 'bold',
+    color: 'white',
+    fontSize: 30,
+    fontWeight: 'bold',
+  },
+  headline: {
+    color: 'white',
+    fontSize: 30,
+    fontWeight: 'bold',
+    textDecorationLine: 'underline',
+    textAlign: 'center',
   },
   preview: {
     height: winHeight,
@@ -60,7 +79,7 @@ export default StyleSheet.create({
   },
   galleryImageContainer: {
     height: winHeight,
-    width: winWidth
+    width: winWidth,
   },
   galleryImage: {
     height: winHeight,
@@ -72,6 +91,6 @@ export default StyleSheet.create({
     backgroundColor: '#DDDDDD',
     width: 100,
     height: 40,
-    margin: 10
+    margin: 10,
   },
 });

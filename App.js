@@ -58,7 +58,7 @@ export default class App extends React.Component {
             // to disable swiping
             scrollEnabled={false}
           >
-            <View style={styles.slideDefault}>
+            <View style={styles.settings}>
               <Settings
                 getSwiper={() => this.swiper}
                 appProps={{
@@ -82,7 +82,7 @@ export default class App extends React.Component {
                 }}
               />
             </View>
-            <View style={styles.slideDefault}>
+            <View style={styles.gallery}>
               <Gallery
                 getSwiper={() => this.swiper}
                 appProps={{

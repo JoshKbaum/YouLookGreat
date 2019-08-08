@@ -61,7 +61,7 @@ export default class Gallery extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.appProps.newPhotos !== prevProps.appProps.newPhotos) {
-      // console.log('gallery state is firing');
+      console.log('gallery state is firing');
       this._getImages();
     }
   }
@@ -82,11 +82,11 @@ export default class Gallery extends React.Component {
 
     return (
       <View style={{ flex: 1 }}>
-        <Text style={styles.text}>Gallery</Text>
+        <Text style={[styles.headline, {paddingTop: 20}]}>Gallery</Text>
         {/* <Button title="load images from YLG folder" onPress={this._getImages} /> */}
         {images && (
           <ScrollView
-            contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}
+            contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', paddingTop: 20 }}
           >
             {this.state.images.map((photo, index) => {
               return (
@@ -98,7 +98,7 @@ export default class Gallery extends React.Component {
                       uri: photo.node.image.uri,
                     });
                     // photo.node.image.filename = 'tom';
-                    // console.log('this is what the info is', photo);
+                    console.log('this is what the info is', photo);
                   }}
                 >
                   <Image
@@ -116,7 +116,7 @@ export default class Gallery extends React.Component {
             })}
             {this.state.photoPage > 1 && (
               <Text
-                style={styles.text}
+                style={[styles.text, {paddingRight: 8}]}
                 onPress={async () => {
                   await this.setState({
                     photoPage: this.state.photoPage - 1,
