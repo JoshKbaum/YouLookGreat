@@ -1,9 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
-
 import { Container, Content } from 'native-base';
 import Swiper from 'react-native-swiper';
-
 import CameraComp from './src/Camera';
 import Settings from './src/Settings';
 import Gallery from './src/Gallery';
@@ -45,6 +43,7 @@ export default class App extends React.Component {
     // console.log('this function is firing', this.state.newPhotos)
   }
 
+
   render() {
     return (
       <Container>
@@ -67,7 +66,7 @@ export default class App extends React.Component {
                   girl: this.state.girl,
                   changeVoice: this.changeVoice,
                   leftHanded: this.state.leftHanded,
-                  changeHand: this.changeHand
+                  changeHand: this.changeHand,
                 }}
               />
             </View>
