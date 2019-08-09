@@ -1,6 +1,4 @@
 import { StyleSheet, Dimensions } from 'react-native';
-
-
 const { width: winWidth, height: winHeight } = Dimensions.get('window');
 
 export default StyleSheet.create({
@@ -93,5 +91,9 @@ export default StyleSheet.create({
     width: 100,
     height: 40,
     margin: 10,
+  },
+  image: {
+    height: 300,
+    width: 200,
   },
 });

@@ -2,20 +2,20 @@ import React from 'react';
 import {
   Image,
   View,
-  StyleSheet,
   Text,
   TouchableHighlight,
 } from 'react-native';
+import styles from './styles';
+
 
 const SelectedPhoto = (props) => {
   return (
-    <View style={styles.container}>
+    <View style={styles.gallery}>
       <Image source={{ uri: props.galleryProps.uri }} style={styles.image} />
       <Text
         onPress={() => {
-          // console.log('repeat compliment');
         }}
-        style={styles.text}
+        style={[styles.text, {fontFamily: 'Heavitas'}]}
       >
         Repeat Compliment
       </Text>
@@ -24,29 +24,12 @@ const SelectedPhoto = (props) => {
            props.galleryProps.goBackToGallery()
 
         }}
-        style={styles.text}
+        style={[styles.text, {fontFamily: 'Heavitas'}]}
       >
         back to gallery
       </Text>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  image: {
-    height: 300,
-    width: 200,
-  },
-  text: {
-    color: 'white',
-    fontSize: 30,
-    fontWeight: 'bold',
-  },
-});
 
 export default SelectedPhoto;

@@ -2,15 +2,14 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import styles from './styles';
-import * as Font from 'expo-font';
 import SwitchToggle from 'react-native-switch-toggle';
 
 export default class settings extends React.Component {
   state = {
-    values: this.props.appProps.values,
-    girl: this.props.appProps.girl,
-    leftHanded: this.props.appProps.leftHanded,
-    fontLoaded: this.props.appProps.fontLoaded,
+    values: this.props.screenProps.values,
+    girl: this.props.screenProps.girl,
+    leftHanded: this.props.screenProps.leftHanded,
+    fontLoaded: this.props.screenProps.fontLoaded,
   };
 
   // FUNCTIONS
@@ -45,25 +44,16 @@ export default class settings extends React.Component {
     return this.state.leftHanded ? '' : 'Right';
   }
 
-  /* LIFECYCLE */
-  async componentDidMount() {
-    await Font.loadAsync({
-      Heavitas: require('../assets/fonts/Heavitas.ttf'),
-    });
-    this.setState({ fontLoaded: true });
-  }
-
   render() {
     return (
-      <View>
+      <View style={styles.settings} >
         {this.state.fontLoaded ? (
           <View>
             <Text style={[styles.headline, { fontFamily: 'Heavitas' }]}>
               Settings
             </Text>
-            <Text style={[styles.text, { fontFamily: 'Heavitas' }]}>
-              Orientation:
-            </Text>
+
+            <Text style={[styles.text, {fontFamily: 'Heavitas'}]}>Orientation:</Text>
 
             <SwitchToggle
               backTextRight={this.getRightTextHand()}
@@ -91,7 +81,7 @@ export default class settings extends React.Component {
                 alignItems: 'center',
                 justifyContent: 'flex-start',
               }}
-              buttonTextStyle={{ fontSize: 20}}
+              buttonTextStyle={{ fontSize: 20 }}
               textRightStyle={{ fontSize: 20 }}
               textLeftStyle={{ fontSize: 20 }}
               backgroundColorOn="#a0e1e5"
@@ -118,7 +108,7 @@ export default class settings extends React.Component {
                 marginTop: 20,
               }}
             />
-            <Text style={styles.text}>Voice:</Text>
+            <Text style={[styles.text, {fontFamily: 'Heavitas'}]}>Voice:</Text>
             <SwitchToggle
               backTextRight={this.getRightTextGender()}
               backTextLeft={this.getLeftTextGender()}
@@ -172,7 +162,7 @@ export default class settings extends React.Component {
                 marginTop: 20,
               }}
             />
-            <Text style={styles.text}>Enthusiasm:</Text>
+            <Text style={[styles.text, {fontFamily: 'Heavitas'}]}>Enthusiasm:</Text>
             <MultiSlider
               values={[this.state.values[0], this.state.values[1]]}
               sliderLength={280}
@@ -181,8 +171,8 @@ export default class settings extends React.Component {
               max={10}
               step={1}
             />
-            <Text style={styles.text}>Lowest: {this.state.values[0]}</Text>
-            <Text style={styles.text}>Highest: {this.state.values[1]}</Text>
+            <Text style={[styles.text, {fontFamily: 'Heavitas'}]}>Lowest: {this.state.values[0]}</Text>
+            <Text style={[styles.text, {fontFamily: 'Heavitas'}]}>Highest: {this.state.values[1]}</Text>
             <View
               style={{
                 borderBottomColor: 'black',
@@ -192,13 +182,13 @@ export default class settings extends React.Component {
             />
             <Text
               onPress={() => {
-                this.props.getSwiper().scrollBy(1);
-                this.props.appProps.changeRange(this.state.values);
-                this.props.appProps.changeVoice(this.state.girl);
-                this.props.appProps.changeHand(this.state.leftHanded);
+                this.props.navigation.navigate('Camera');
+                this.props.screenProps.changeRange(this.state.values);
+                this.props.screenProps.changeVoice(this.state.girl);
+                this.props.screenProps.changeHand(this.state.leftHanded);
                 // console.log('this was pressed', this.state);
               }}
-              style={styles.text}
+              style={[styles.text, {fontFamily: 'Heavitas'}]}
             >
               back to camera
             </Text>

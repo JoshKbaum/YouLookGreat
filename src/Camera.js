@@ -46,10 +46,10 @@ export default class CameraComp extends React.Component {
       cameraType: Camera.Constants.Type.front,
       flashMode: Camera.Constants.FlashMode.off,
       zoom: 0,
-      values: this.props.appProps.values,
+      values: this.props.screenProps.values,
       compliment: null,
-      girl: this.props.appProps.girl,
-      leftHanded: this.props.appProps.leftHanded,
+      girl: this.props.screenProps.girl,
+      leftHanded: this.props.screenProps.leftHanded,
       flip: false,
       mute: false,
     };
@@ -102,15 +102,15 @@ export default class CameraComp extends React.Component {
   // when options change, this will update the state
   static getDerivedStateFromProps(nextProps, prevState) {
     if (
-      nextProps.appProps.values !== prevState.values ||
-      nextProps.appProps.leftHanded !== prevState.leftHanded ||
-      nextProps.appProps.girl !== prevState.girl
+      nextProps.screenProps.values !== prevState.values ||
+      nextProps.screenProps.leftHanded !== prevState.leftHanded ||
+      nextProps.screenProps.girl !== prevState.girl
     ) {
       console.log('camera state is firing');
       return {
-        values: nextProps.appProps.values,
-        leftHanded: nextProps.appProps.leftHanded,
-        girl: nextProps.appProps.girl,
+        values: nextProps.screenProps.values,
+        leftHanded: nextProps.screenProps.leftHanded,
+        girl: nextProps.screenProps.girl,
       };
     } else {
       return null; // Triggers no change in the state
@@ -152,7 +152,7 @@ export default class CameraComp extends React.Component {
               backgroundColor: 'lightcoral',
               marginTop: 170,
             }}
-            onPress={() => this.props.getSwiper().scrollBy(-1)}
+            onPress={() => this.props.navigation.navigate('Settings')}
           >
             <View style={{ alignItems: 'center' }}>
               <AntDesign
@@ -190,12 +190,11 @@ export default class CameraComp extends React.Component {
           {/* GALLERY BUTTON */}
           <TouchableHighlight
             style={{ width: 35, height: 35, backgroundColor: 'darkolivegreen' }}
-            onPress={() => this.props.getSwiper().scrollBy(1)}
+            onPress={() => this.props.navigation.navigate('Gallery')}
           >
             <View style={{ alignItems: 'center' }}>
               <Icon
                 name="md-images"
-                onPress={() => this.props.getSwiper().scrollBy(1)}
                 style={{
                   color: 'white',
                   marginTop: 1.4,
@@ -361,7 +360,7 @@ export default class CameraComp extends React.Component {
             } else {
               MediaLibrary.addAssetsToAlbumAsync([photo], album, true);
             }
-            this.props.appProps.refreshGallery();
+            this.props.screenProps.refreshGallery();
             // console.log(']]', this.state.path, album)
             this.setState({ path: null });
           }}

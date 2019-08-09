@@ -21,13 +21,9 @@ export default class Gallery extends React.Component {
       showSelectedPhoto: false,
       uri: '',
       photoPage: 1,
+      fontLoaded: this.props.screenProps.fontLoaded,
     };
   }
-  // state = {
-  //   images: null,
-  //   showSelectedPhoto: false,
-  //   uri: '',
-  // };
 
   /* FUNCTIONS */
   goBackToGallery = () => {
@@ -60,7 +56,7 @@ export default class Gallery extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.appProps.newPhotos !== prevProps.appProps.newPhotos) {
+    if (this.props.screenProps.newPhotos !== prevProps.screenProps.newPhotos) {
       console.log('gallery state is firing');
       this._getImages();
     }
@@ -68,7 +64,7 @@ export default class Gallery extends React.Component {
 
   render() {
     let { showSelectedPhoto, uri, images } = this.state;
-    if (showSelectedPhoto) {
+    if (showSelectedPhoto && this.state.fontLoaded) {
       return (
         <SelectedPhoto
           galleryProps={{
@@ -81,76 +77,84 @@ export default class Gallery extends React.Component {
     }
 
     return (
-      <View style={{ flex: 1 }}>
-        <Text style={[styles.headline, {paddingTop: 20}]}>Gallery</Text>
-        {/* <Button title="load images from YLG folder" onPress={this._getImages} /> */}
-        {images && (
-          <ScrollView
-            contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', paddingTop: 20 }}
-          >
-            {this.state.images.map((photo, index) => {
-              return (
-                <TouchableHighlight
-                  key={index}
-                  onPress={() => {
-                    this.setState({
-                      showSelectedPhoto: true,
-                      uri: photo.node.image.uri,
-                    });
-                    // photo.node.image.filename = 'tom';
-                    console.log('this is what the info is', photo);
-                  }}
-                >
-                  <Image
-                    style={{
-                      width: 100,
-                      height: 100,
-                      marginBottom: 5,
-                      marginLeft: 3,
-                      marginRight: 3,
+      <View style={styles.gallery}>
+        {this.state.fontLoaded ? (
+          <View>
+            <Text style={[styles.headline, { paddingTop: 20, fontFamily: 'Heavitas' }]}>Gallery</Text>
+            {/* <Button title="load images from YLG folder" onPress={this._getImages} /> */}
+            {images && (
+              <ScrollView
+                contentContainerStyle={{
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                  paddingTop: 20,
+                }}
+              >
+                {this.state.images.map((photo, index) => {
+                  return (
+                    <TouchableHighlight
+                      key={index}
+                      onPress={() => {
+                        this.setState({
+                          showSelectedPhoto: true,
+                          uri: photo.node.image.uri,
+                        });
+                        // photo.node.image.filename = 'tom';
+                        console.log('this is what the info is', photo);
+                      }}
+                    >
+                      <Image
+                        style={{
+                          width: 100,
+                          height: 100,
+                          marginBottom: 5,
+                          marginLeft: 3,
+                          marginRight: 3,
+                        }}
+                        source={{ uri: photo.node.image.uri }}
+                      />
+                    </TouchableHighlight>
+                  );
+                })}
+                {this.state.photoPage > 1 && (
+                  <Text
+                    style={[styles.text, { paddingRight: 8, fontFamily: 'Heavitas' }]}
+                    onPress={async () => {
+                      await this.setState({
+                        photoPage: this.state.photoPage - 1,
+                      });
+                      this._getImages();
                     }}
-                    source={{ uri: photo.node.image.uri }}
-                  />
-                </TouchableHighlight>
-              );
-            })}
-            {this.state.photoPage > 1 && (
-              <Text
-                style={[styles.text, {paddingRight: 8}]}
-                onPress={async () => {
-                  await this.setState({
-                    photoPage: this.state.photoPage - 1,
-                  });
-                  this._getImages();
-                }}
-              >
-                Less
-              </Text>
+                  >
+                    Less
+                  </Text>
+                )}
+                {this.state.images.length >= this.state.photoPage * 18 && (
+                  <Text
+                    style={[styles.text, {fontFamily: 'Heavitas'}]}
+                    onPress={async () => {
+                      await this.setState({
+                        photoPage: this.state.photoPage + 1,
+                      });
+                      this._getImages();
+                    }}
+                  >
+                    More
+                  </Text>
+                )}
+              </ScrollView>
             )}
-            {this.state.images.length >= this.state.photoPage * 18 && (
-              <Text
-                style={styles.text}
-                onPress={async () => {
-                  await this.setState({
-                    photoPage: this.state.photoPage + 1,
-                  });
-                  this._getImages();
-                }}
-              >
-                More
-              </Text>
-            )}
-          </ScrollView>
-        )}
-        {!images && <Text>You have no photos yet!</Text>}
-        <Text
-          onPress={() => {
-            this.props.getSwiper().scrollBy(-1);
-          }}
-          style={styles.text}
-        >
-          back to camera
-        </Text>
+            {!images && <Text>You have no photos yet!</Text>}
+            <Text
+              onPress={() => {
+                this.props.navigation.navigate('Camera');
+              }}
+              style={[styles.text, {fontFamily: 'Heavitas'}]}
+            >
+              back to camera
+            </Text>
+          </View>
+        ) : null}
       </View>
     );
   }
