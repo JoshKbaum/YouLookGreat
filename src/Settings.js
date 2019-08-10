@@ -6,8 +6,6 @@ import SwitchToggle from 'react-native-switch-toggle';
 import CustomMarkerLeft from './CustomMarkerLeft';
 import CustomMarkerRight from './CustomMarkerRight';
 
-
-
 export default class settings extends React.Component {
   state = {
     values: this.props.screenProps.values,
@@ -50,14 +48,16 @@ export default class settings extends React.Component {
 
   render() {
     return (
-      <View style={styles.settings} >
+      <View style={styles.settings}>
         {this.state.fontLoaded ? (
-          <View style={{alignItems: 'center'}}>
+          <View style={{ alignItems: 'center' }}>
             <Text style={[styles.headline, { fontFamily: 'Heavitas' }]}>
               Settings
             </Text>
 
-            <Text style={[styles.text, {fontFamily: 'Heavitas'}]}>Orientation:</Text>
+            <Text style={[styles.text, { fontFamily: 'Heavitas' }]}>
+              Orientation:
+            </Text>
 
             <SwitchToggle
               backTextRight={this.getRightTextHand()}
@@ -112,7 +112,9 @@ export default class settings extends React.Component {
                 marginTop: 20,
               }}
             />
-            <Text style={[styles.text, {fontFamily: 'Heavitas'}]}>Voice:</Text>
+            <Text style={[styles.text, { fontFamily: 'Heavitas' }]}>
+              Voice:
+            </Text>
             <SwitchToggle
               backTextRight={this.getRightTextGender()}
               backTextLeft={this.getLeftTextGender()}
@@ -166,7 +168,9 @@ export default class settings extends React.Component {
                 marginTop: 20,
               }}
             />
-            <Text style={[styles.text, {fontFamily: 'Heavitas'}]}>Enthusiasm:</Text>
+            <Text style={[styles.text, { fontFamily: 'Heavitas' }]}>
+              Enthusiasm:
+            </Text>
             <MultiSlider
               values={[this.state.values[0], this.state.values[1]]}
               sliderLength={280}
@@ -176,24 +180,48 @@ export default class settings extends React.Component {
               step={1}
               selectedStyle={{
                 backgroundColor: 'gold',
-            }}
-            unselectedStyle={{
+              }}
+              unselectedStyle={{
                 backgroundColor: 'silver',
-            }}
-            isMarkersSeparated={true}
-            customMarkerLeft={() => {
-              return (<CustomMarkerLeft
-               currentValue={this.state.values[0]}/>)
-               }}
-     
+              }}
+              isMarkersSeparated={true}
+              customMarkerLeft={() => {
+                return <CustomMarkerLeft currentValue={this.state.values[0]} />;
+              }}
               customMarkerRight={() => {
-              return (<CustomMarkerRight
-              currentValue={this.state.values[1]}/>)
+                return (
+                  <CustomMarkerRight currentValue={this.state.values[1]} />
+                );
               }}
               allowOverlap
             />
-            <Text style={[styles.text, {fontFamily: 'Heavitas'}]}>Lowest: {this.state.values[0]}</Text>
-            <Text style={[styles.text, {fontFamily: 'Heavitas'}]}>Highest: {this.state.values[1]}</Text>
+            <Text>
+              <Text style={[styles.text, { fontFamily: 'Heavitas' }]}>
+                Lowest:
+              </Text>
+              <Text
+                style={[
+                  styles.text,
+                  { fontFamily: 'Heavitas', color: 'lightcoral' },
+                ]}
+              >{' '}
+                {this.state.values[0]}
+              </Text>
+            </Text>
+            <Text>
+              <Text style={[styles.text, { fontFamily: 'Heavitas' }]}>
+                Highest:
+              </Text>
+              <Text
+                style={[
+                  styles.text,
+                  { fontFamily: 'Heavitas', color: 'darkolivegreen' },
+                ]}
+              >
+                {' '}
+                {this.state.values[1]}
+              </Text>
+            </Text>
             <View
               style={{
                 borderBottomColor: 'black',
@@ -209,7 +237,7 @@ export default class settings extends React.Component {
                 this.props.screenProps.changeHand(this.state.leftHanded);
                 // console.log('this was pressed', this.state);
               }}
-              style={[styles.text, {fontFamily: 'Heavitas'}]}
+              style={[styles.text, { fontFamily: 'Heavitas' }]}
             >
               back to camera
             </Text>

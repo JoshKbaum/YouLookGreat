@@ -15,6 +15,7 @@ import {
   MaterialIcons,
 } from '@expo/vector-icons';
 import Preview from './Preview';
+import Capture from './Capture';
 
 // import styles from './styles';
 
@@ -52,7 +53,6 @@ export default class CameraComp extends React.Component {
       mute: false,
     };
   }
-
   /* FUNCTIONS */
   setFlashMode = flashMode => this.setState({ flashMode });
 
@@ -99,6 +99,41 @@ export default class CameraComp extends React.Component {
       flip: this.state.flip === false ? true : false,
     });
   };
+
+  muteAudio = () => {
+    this.setState({
+      mute: this.state.mute === true ? false : true,
+    });
+  };
+
+  changeCameraType = () => {
+    this.setState({
+      cameraType:
+        this.state.cameraType === Camera.Constants.Type.back
+          ? Camera.Constants.Type.front
+          : Camera.Constants.Type.back,
+      zoom: this.state.zoom === 0.1 ? 0 : 0,
+    });
+  };
+
+  changeFlash = () => {
+    this.setFlashMode(
+      this.state.flashMode === Camera.Constants.FlashMode.on
+        ? Camera.Constants.FlashMode.off
+        : Camera.Constants.FlashMode.on
+    );
+  };
+
+  changeZoom = () => {
+    this.setState({
+      zoom: this.state.zoom === 0 ? 0.1 : 0,
+    });
+  };
+
+  setRef = ref => {
+    this.camera = ref;
+  };
+
   /* LIFECYCLE */
   async componentDidMount() {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
@@ -125,194 +160,196 @@ export default class CameraComp extends React.Component {
     }
   }
 
-  renderCamera() {
-    const {
-      hasCameraPermission,
-      flashMode,
-      leftHanded,
-      girl,
-      mute,
-      zoom,
-    } = this.state;
+  // Capture() {
+  //   const {
+  //     hasCameraPermission,
+  //     flashMode,
+  //     leftHanded,
+  //     girl,
+  //     mute,
+  //     zoom,
+  //   } = this.state;
 
-    if (hasCameraPermission === null) {
-      return <View />;
-    } else if (hasCameraPermission === false) {
-      return <Text> No access to camera </Text>;
-    }
-    return (
-      <Camera
-        ref={camera => {
-          this.camera = camera;
-        }}
-        style={styles.preview}
-        flashMode={flashMode}
-        type={this.state.cameraType}
-        zoom={zoom}
-      >
-        {/* HUD */}
-        <View style={[leftHanded ? styles.leftHand : styles.rightHand]}>
-          {/* SETTINGS BUTTON */}
-          <TouchableHighlight
-            style={{
-              width: 35,
-              height: 35,
-              backgroundColor: 'lightcoral',
-              marginTop: 170,
-            }}
-            onPress={() => this.props.navigation.navigate('Settings')}
-          >
-            <View style={{ alignItems: 'center' }}>
-              <AntDesign
-                name="setting"
-                size={30}
-                style={{
-                  color: 'white',
-                  fontWeight: 'bold',
-                  marginTop: 2,
-                  marginLeft: 0.5,
-                }}
-              />
-            </View>
-          </TouchableHighlight>
-          {/* VOLUME BUTTON */}
-          <TouchableHighlight
-            style={{ width: 35, height: 35, backgroundColor: 'goldenrod' }}
-            onPress={() => {
-              this.setState({
-                mute: mute === true ? false : true,
-              });
-            }}
-          >
-            <View style={{ alignItems: 'center' }}>
-              <Feather
-                name={mute == true ? 'volume' : 'volume-x'}
-                size={32}
-                style={{
-                  color: 'white',
-                  fontWeight: 'bold',
-                }}
-              />
-            </View>
-          </TouchableHighlight>
-          {/* GALLERY BUTTON */}
-          <TouchableHighlight
-            style={{ width: 35, height: 35, backgroundColor: 'darkolivegreen' }}
-            onPress={() => this.props.navigation.navigate('Gallery')}
-          >
-            <View style={{ alignItems: 'center' }}>
-              <Icon
-                name="md-images"
-                style={{
-                  color: 'white',
-                  marginTop: 1.4,
-                  marginLeft: 1,
-                }}
-              />
-            </View>
-          </TouchableHighlight>
-          {/* CAMERA TYPE BUTTON */}
-          <TouchableHighlight
-            style={{ width: 35, height: 35, backgroundColor: 'pink' }}
-            onPress={() => {
-              this.setState({
-                cameraType:
-                  this.state.cameraType === Camera.Constants.Type.back
-                    ? Camera.Constants.Type.front
-                    : Camera.Constants.Type.back,
-                zoom: this.state.zoom === 0.1 ? 0 : 0,
-              });
-            }}
-          >
-            <View style={{ alignItems: 'center' }}>
-              <Ionicons
-                name="md-reverse-camera"
-                size={30}
-                style={{
-                  color: 'white',
-                  fontWeight: 'bold',
-                  marginTop: 1.5,
-                }}
-              />
-            </View>
-          </TouchableHighlight>
-          {/* FLASH BUTTON */}
-          <TouchableHighlight
-            style={{ width: 35, height: 35, backgroundColor: 'darkslateblue' }}
-            onPress={() =>
-              this.setFlashMode(
-                flashMode === Camera.Constants.FlashMode.on
-                  ? Camera.Constants.FlashMode.off
-                  : Camera.Constants.FlashMode.on
-              )
-            }
-          >
-            <View style={{ alignItems: 'center' }}>
-              <MaterialIcons
-                name={
-                  flashMode == Camera.Constants.FlashMode.on
-                    ? 'flash-on'
-                    : 'flash-off'
-                }
-                size={30}
-                style={{
-                  color: 'white',
-                  fontWeight: 'bold',
-                  marginTop: 3,
-                  marginLeft: 2,
-                }}
-              />
-            </View>
-          </TouchableHighlight>
-          {/* BACK ONLY / ZOOM BUTTON */}
-          {this.state.cameraType === Camera.Constants.Type.back ? (
-            <TouchableHighlight
-              style={{ width: 35, height: 35, backgroundColor: 'lightcoral' }}
-              onPress={() => {
-                this.setState({
-                  zoom: this.state.zoom === 0 ? 0.1 : 0,
-                });
-              }}
-            >
-              <View style={{ alignItems: 'center' }}>
-                <Feather
-                  name={zoom == 0 ? 'zoom-in' : 'zoom-out'}
-                  size={30}
-                  style={{
-                    color: 'white',
-                    fontWeight: 'bold',
-                    marginTop: 1,
-                    marginLeft: 1,
-                  }}
-                />
-              </View>
-            </TouchableHighlight>
-          ) : null}
-        </View>
-        {/* CAPTURE PHOTO BUTTON */}
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            paddingHorizontal: 10,
-            marginBottom: 15,
-            zIndex: 1,
-          }}
-        >
-          <TouchableHighlight
-            style={styles.capture}
-            onPress={this.takePicture.bind(this)}
-            // COME BACK TO THIS
-            underlayColor="rgba(255, 255, 255, 0.5)"
-          >
-            <View />
-          </TouchableHighlight>
-        </View>
-      </Camera>
-    );
-  }
+  //   if (hasCameraPermission === null) {
+  //     return <View />;
+  //   } else if (hasCameraPermission === false) {
+  //     return <Text> No access to camera </Text>;
+  //   }
+  //   return (
+  //     <Camera
+  //       ref={camera => {
+  //         this.camera = camera;
+  //       }}
+  //       style={styles.preview}
+  //       flashMode={flashMode}
+  //       type={this.state.cameraType}
+  //       zoom={zoom}
+  //     >
+  //       {/* HUD */}
+  //       <View style={[leftHanded ? styles.leftHand : styles.rightHand]}>
+  //         {/* SETTINGS BUTTON */}
+  //         <TouchableHighlight
+  //           style={{
+  //             width: 35,
+  //             height: 35,
+  //             backgroundColor: 'lightcoral',
+  //             marginTop: 170,
+  //           }}
+  //           onPress={() => this.props.navigation.navigate('Settings')}
+  //         >
+  //           <View style={{ alignItems: 'center' }}>
+  //             <AntDesign
+  //               name="setting"
+  //               size={30}
+  //               style={{
+  //                 color: 'white',
+  //                 fontWeight: 'bold',
+  //                 marginTop: 2,
+  //                 marginLeft: 0.5,
+  //               }}
+  //             />
+  //           </View>
+  //         </TouchableHighlight>
+  //         {/* VOLUME BUTTON */}
+  //         <TouchableHighlight
+  //           style={{ width: 35, height: 35, backgroundColor: 'goldenrod' }}
+  //           onPress={() => {
+  //             this.setState({
+  //               mute: mute === true ? false : true,
+  //             });
+  //           }}
+  //         >
+  //           <View style={{ alignItems: 'center' }}>
+  //             <Feather
+  //               name={mute == true ? 'volume' : 'volume-x'}
+  //               size={32}
+  //               style={{
+  //                 color: 'white',
+  //                 fontWeight: 'bold',
+  //               }}
+  //             />
+  //           </View>
+  //         </TouchableHighlight>
+  //         {/* GALLERY BUTTON */}
+  //         <TouchableHighlight
+  //           style={{ width: 35, height: 35, backgroundColor: 'darkolivegreen' }}
+  //           onPress={() => this.props.navigation.navigate('Gallery')}
+  //         >
+  //           <View style={{ alignItems: 'center' }}>
+  //             <Icon
+  //               name="md-images"
+  //               style={{
+  //                 color: 'white',
+  //                 marginTop: 1.4,
+  //                 marginLeft: 1,
+  //               }}
+  //             />
+  //           </View>
+  //         </TouchableHighlight>
+  //         {/* CAMERA TYPE BUTTON */}
+  //         <TouchableHighlight
+  //           style={{ width: 35, height: 35, backgroundColor: 'pink' }}
+  //           onPress={() => {
+  //             this.setState({
+  //               cameraType:
+  //                 this.state.cameraType === Camera.Constants.Type.back
+  //                   ? Camera.Constants.Type.front
+  //                   : Camera.Constants.Type.back,
+  //               zoom: this.state.zoom === 0.1 ? 0 : 0,
+  //             });
+  //           }}
+  //         >
+  //           <View style={{ alignItems: 'center' }}>
+  //             <Ionicons
+  //               name="md-reverse-camera"
+  //               size={30}
+  //               style={{
+  //                 color: 'white',
+  //                 fontWeight: 'bold',
+  //                 marginTop: 1.5,
+  //               }}
+  //             />
+  //           </View>
+  //         </TouchableHighlight>
+  //         {/* FLASH BUTTON */}
+  //         <TouchableHighlight
+  //           style={{ width: 35, height: 35, backgroundColor: 'darkslateblue' }}
+  //           onPress={() =>
+  //             this.setFlashMode(
+  //               flashMode === Camera.Constants.FlashMode.on
+  //                 ? Camera.Constants.FlashMode.off
+  //                 : Camera.Constants.FlashMode.on
+  //             )
+  //           }
+  //         >
+  //           <View style={{ alignItems: 'center' }}>
+  //             <MaterialIcons
+  //               name={
+  //                 flashMode == Camera.Constants.FlashMode.on
+  //                   ? 'flash-on'
+  //                   : 'flash-off'
+  //               }
+  //               size={30}
+  //               style={{
+  //                 color: 'white',
+  //                 fontWeight: 'bold',
+  //                 marginTop: 3,
+  //                 marginLeft: 2,
+  //               }}
+  //             />
+  //           </View>
+  //         </TouchableHighlight>
+  //         {/* BACK ONLY / ZOOM BUTTON */}
+  //         {this.state.cameraType === Camera.Constants.Type.back ? (
+  //           <TouchableHighlight
+  //             style={{ width: 35, height: 35, backgroundColor: 'lightcoral' }}
+  //             onPress={() => {
+  //               this.setState({
+  //                 zoom: this.state.zoom === 0 ? 0.1 : 0,
+  //               });
+  //             }}
+  //           >
+  //             <View style={{ alignItems: 'center' }}>
+  //               <Feather
+  //                 name={zoom == 0 ? 'zoom-in' : 'zoom-out'}
+  //                 size={30}
+  //                 style={{
+  //                   color: 'white',
+  //                   fontWeight: 'bold',
+  //                   marginTop: 1,
+  //                   marginLeft: 1,
+  //                 }}
+  //               />
+  //             </View>
+  //           </TouchableHighlight>
+  //         ) : null}
+  //       </View>
+  //       {/* CAPTURE PHOTO BUTTON */}
+  //       <View
+  //         style={{
+  //           flexDirection: 'row',
+  //           justifyContent: 'center',
+  //           paddingHorizontal: 10,
+  //           marginBottom: 15,
+  //           zIndex: 1,
+  //         }}
+  //       >
+  //         <TouchableHighlight
+  //           style={styles.capture}
+  //           onPress={this.takePicture.bind(this)}
+  //           // COME BACK TO THIS
+  //           underlayColor="rgba(255, 255, 255, 0.5)"
+  //         >
+  //           <View />
+  //         </TouchableHighlight>
+  //       </View>
+  //     </Camera>
+  //   );
+  // }
 
   render() {
+    console.log('======', this.props);
+
     return (
       <View style={styles.container}>
         {this.state.path ? (
@@ -328,7 +365,24 @@ export default class CameraComp extends React.Component {
             }}
           />
         ) : (
-          this.renderCamera()
+          <Capture
+            cameraProps={{
+              navigation: this.props.navigation,
+              hasCameraPermission: this.state.hasCameraPermission,
+              flashMode: this.state.flashMode,
+              leftHanded: this.state.leftHanded,
+              girl: this.state.girl,
+              mute: this.state.mute,
+              zoom: this.state.zoom,
+              cameraType: this.state.cameraType,
+              takePicture: this.takePicture,
+              muteAudio: this.muteAudio,
+              changeCameraType: this.changeCameraType,
+              changeFlash: this.changeFlash,
+              changeZoom: this.changeZoom,
+              setRef: this.setRef
+            }}
+          />
         )}
       </View>
     );
