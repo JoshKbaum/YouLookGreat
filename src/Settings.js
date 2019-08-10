@@ -3,6 +3,10 @@ import { View, Text } from 'react-native';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import styles from './styles';
 import SwitchToggle from 'react-native-switch-toggle';
+import CustomMarkerLeft from './CustomMarkerLeft';
+import CustomMarkerRight from './CustomMarkerRight';
+
+
 
 export default class settings extends React.Component {
   state = {
@@ -48,7 +52,7 @@ export default class settings extends React.Component {
     return (
       <View style={styles.settings} >
         {this.state.fontLoaded ? (
-          <View>
+          <View style={{alignItems: 'center'}}>
             <Text style={[styles.headline, { fontFamily: 'Heavitas' }]}>
               Settings
             </Text>
@@ -60,8 +64,8 @@ export default class settings extends React.Component {
               backTextLeft={this.getLeftTextHand()}
               containerStyle={{
                 marginTop: 16,
-                width: 160,
-                height: 65,
+                width: 260,
+                height: 55,
                 borderRadius: 30,
                 padding: 5,
               }}
@@ -87,8 +91,8 @@ export default class settings extends React.Component {
               backgroundColorOn="#a0e1e5"
               backgroundColorOff="#e5e1e0"
               circleStyle={{
-                width: 55,
-                height: 55,
+                width: 45,
+                height: 45,
                 borderRadius: 27.5,
                 backgroundColor: 'blue', // rgb(102,134,205)
               }}
@@ -115,7 +119,7 @@ export default class settings extends React.Component {
               containerStyle={{
                 marginTop: 16,
                 width: 160,
-                height: 65,
+                height: 55,
                 borderRadius: 30,
                 padding: 5,
               }}
@@ -141,8 +145,8 @@ export default class settings extends React.Component {
               backgroundColorOn="#a0e1e5"
               backgroundColorOff="#e5e1e0"
               circleStyle={{
-                width: 55,
-                height: 55,
+                width: 45,
+                height: 45,
                 borderRadius: 27.5,
                 backgroundColor: 'blue', // rgb(102,134,205)
               }}
@@ -170,6 +174,22 @@ export default class settings extends React.Component {
               min={1}
               max={10}
               step={1}
+              selectedStyle={{
+                backgroundColor: 'gold',
+            }}
+            unselectedStyle={{
+                backgroundColor: 'silver',
+            }}
+            isMarkersSeparated={true}
+            customMarkerLeft={() => {
+              return (<CustomMarkerLeft
+               currentValue={this.state.values[0]}/>)
+               }}
+     
+              customMarkerRight={() => {
+              return (<CustomMarkerRight
+              currentValue={this.state.values[1]}/>)
+              }}
             />
             <Text style={[styles.text, {fontFamily: 'Heavitas'}]}>Lowest: {this.state.values[0]}</Text>
             <Text style={[styles.text, {fontFamily: 'Heavitas'}]}>Highest: {this.state.values[1]}</Text>

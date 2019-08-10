@@ -31,6 +31,7 @@ export default StyleSheet.create({
     fontWeight: 'bold',
     textDecorationLine: 'underline',
     textAlign: 'center',
+    marginBottom: 10
   },
   preview: {
     height: winHeight,
