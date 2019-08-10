@@ -19,7 +19,7 @@ import Preview from './Preview';
 // import styles from './styles';
 
 // [[all, one, sounds],[all, two, sounds], [all, three, sounds]...]
-// since expo does not currently allow template literals, this code cannot be DRY
+// will DRY this out once all vocals are recorded and added
 const allSounds = [
   [require('../assets/audio/1.mp3')],
   [require('../assets/audio/2.mp3')],

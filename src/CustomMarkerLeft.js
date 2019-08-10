@@ -1,27 +1,32 @@
 import React from 'react';
-import { StyleSheet, Image } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 class CustomMarkerLeft extends React.Component {
   render() {
     return (
-      <Image
-        style={styles.image}
-        source={
-          require('../assets/images/redDown.png')
-        }
-        resizeMode="contain"
-      />
+      <View style={styles.triangleDown} />
+
     );
   }
 }
 
 const styles = StyleSheet.create({
-  image: {
-    height: 40,
-    width: 40,
-    transform: [{ rotateX: '180deg' }],
+  triangleDown: {
+    width: 0,
+    height: 0,
+    backgroundColor: 'transparent',
+    borderStyle: 'solid',
+    borderLeftWidth: 20,
+    borderRightWidth: 20,
+    borderBottomWidth: 40,
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent',
+    borderBottomColor: 'lightcoral',
+    transform: [
+      {rotate: '180deg'}
+    ]
+  }
 
-  },
 });
 
 export default CustomMarkerLeft;

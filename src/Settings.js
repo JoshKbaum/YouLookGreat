@@ -190,6 +190,7 @@ export default class settings extends React.Component {
               return (<CustomMarkerRight
               currentValue={this.state.values[1]}/>)
               }}
+              allowOverlap
             />
             <Text style={[styles.text, {fontFamily: 'Heavitas'}]}>Lowest: {this.state.values[0]}</Text>
             <Text style={[styles.text, {fontFamily: 'Heavitas'}]}>Highest: {this.state.values[1]}</Text>

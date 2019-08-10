@@ -1,23 +1,28 @@
 import React from 'react';
-import { StyleSheet, Image } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 class CustomMarkerRight extends React.Component {
   render() {
     return (
-      <Image
-        style={styles.image}
-        source={require('../assets/images/greenUp.png')}
-        resizeMode="contain"
-      />
+      <View style={styles.triangleUp} />
     );
   }
 }
 
 const styles = StyleSheet.create({
-  image: {
-    height: 40,
-    width: 40,
-  },
+  triangleUp: {
+    width: 0,
+    height: 0,
+    backgroundColor: 'transparent',
+    borderStyle: 'solid',
+    borderLeftWidth: 20,
+    borderRightWidth: 20,
+    borderBottomWidth: 40,
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent',
+    borderBottomColor: 'darkolivegreen'
+  }
+
 });
 
 export default CustomMarkerRight;
