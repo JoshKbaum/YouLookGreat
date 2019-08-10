@@ -1,9 +1,8 @@
 import React from 'react';
-import { Camera, Permissions, Audio, MediaLibrary } from 'expo';
+import { Camera, Permissions, Audio } from 'expo';
 import {
   View,
   Text,
-  Image,
   TouchableHighlight,
   StyleSheet,
   Dimensions,
@@ -15,7 +14,7 @@ import {
   Feather,
   MaterialIcons,
 } from '@expo/vector-icons';
-import FadeIn from 'react-native-fade-in-image';
+import Preview from './Preview';
 
 // import styles from './styles';
 
@@ -33,8 +32,7 @@ const allSounds = [
   [require('../assets/audio/9.mp3')],
   [require('../assets/audio/10.mp3')],
 ];
-const DURATION = 10000;
-const PATTERN = [1000, 2000, 3000];
+
 const expSounds = [[1], [2], [3], [4], [5], [6], [7], [8], [9], [10]];
 
 export default class CameraComp extends React.Component {
@@ -92,6 +90,16 @@ export default class CameraComp extends React.Component {
     this.sound = sound;
   };
 
+  cancelPhoto = () => {
+    this.setState({ path: null });
+  };
+
+  flipPhoto = () => {
+    this.setState({
+      flip: this.state.flip === false ? true : false,
+    });
+  };
+  /* LIFECYCLE */
   async componentDidMount() {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
     this.setState({
@@ -99,14 +107,14 @@ export default class CameraComp extends React.Component {
     });
   }
 
-  // when options change, this will update the state
+  // when user changes options, this will update the state
   static getDerivedStateFromProps(nextProps, prevState) {
     if (
       nextProps.screenProps.values !== prevState.values ||
       nextProps.screenProps.leftHanded !== prevState.leftHanded ||
       nextProps.screenProps.girl !== prevState.girl
     ) {
-      console.log('camera state is firing');
+      // console.log('camera state is firing');
       return {
         values: nextProps.screenProps.values,
         leftHanded: nextProps.screenProps.leftHanded,
@@ -294,6 +302,7 @@ export default class CameraComp extends React.Component {
           <TouchableHighlight
             style={styles.capture}
             onPress={this.takePicture.bind(this)}
+            // COME BACK TO THIS
             underlayColor="rgba(255, 255, 255, 0.5)"
           >
             <View />
@@ -303,78 +312,24 @@ export default class CameraComp extends React.Component {
     );
   }
 
-  renderImage() {
-    // const { flip } = this.state;
-
-    return (
-      <View>
-        <FadeIn>
-          <Image
-            source={{ uri: this.state.path }}
-            style={[styles.preview, this.state.flip ? styles.mirror : styles.preview]}
-          />
-        </FadeIn>
-        {/* CANCEL BUTTON */}
-        <Text
-          style={styles.cancel}
-          onPress={() => this.setState({ path: null })}
-        >
-          Cancel
-        </Text>
-        {/* FLIP BUTTON */}
-        <Text
-          style={styles.flip}
-          onPress={() =>
-            this.setState({
-              flip: this.state.flip === false ? true : false,
-            })
-          }
-        >
-          Flip
-        </Text>
-        {/* REPEAT BUTTON */}
-        <Text
-          style={styles.repeat}
-          onPress={() => {
-            this.playCompliment();
-          }}
-        >
-          Repeat
-        </Text>
-        {/* SAVE BUTTON */}
-        <Text
-          style={styles.save}
-          onPress={async () => {
-            //save to camera roll and copy to 'YLG' album
-            let photo = await MediaLibrary.createAssetAsync(this.state.path);
-            // photo.filename = 'tomtom'
-            //  console.log('this photo info is saved', photo)
-            const album = await MediaLibrary.getAlbumAsync('You Look Great');
-            // console.log('-=========', album)
-            if (album === null) {
-              await MediaLibrary.createAlbumAsync(
-                'You Look Great',
-                photo,
-                false
-              );
-            } else {
-              MediaLibrary.addAssetsToAlbumAsync([photo], album, true);
-            }
-            this.props.screenProps.refreshGallery();
-            // console.log(']]', this.state.path, album)
-            this.setState({ path: null });
-          }}
-        >
-          Save
-        </Text>
-      </View>
-    );
-  }
-
   render() {
     return (
       <View style={styles.container}>
-        {this.state.path ? this.renderImage() : this.renderCamera()}
+        {this.state.path ? (
+          <Preview
+            cameraProps={{
+              uri: this.state.path,
+              playCompliment: this.playCompliment,
+              path: this.state.path,
+              flip: this.state.flip,
+              refreshGallery: this.props.screenProps.refreshGallery,
+              cancelPhoto: this.cancelPhoto,
+              flipPhoto: this.flipPhoto,
+            }}
+          />
+        ) : (
+          this.renderCamera()
+        )}
       </View>
     );
   }
@@ -392,20 +347,6 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').height,
     width: Dimensions.get('window').width,
   },
-  mirror: {
-    flex: 1,
-    justifyContent: 'space-between',
-    height: Dimensions.get('window').height,
-    width: Dimensions.get('window').width,
-    transform: [{ rotateY: '180deg' }],
-  },
-  frontPhoto: {
-    transform: [{ rotateY: '180deg' }],
-    flex: 1,
-    justifyContent: 'space-between',
-    height: Dimensions.get('window').height,
-    width: Dimensions.get('window').width,
-  },
   capture: {
     width: 70,
     height: 70,
@@ -413,50 +354,6 @@ const styles = StyleSheet.create({
     borderWidth: 5,
     borderColor: '#FFF',
     marginBottom: 15,
-  },
-  cancel: {
-    position: 'absolute',
-    right: 20,
-    bottom: 50,
-    backgroundColor: 'transparent',
-    color: '#FFF',
-    fontWeight: '600',
-    fontSize: 23,
-    marginTop: 50,
-  },
-  repeat: {
-    position: 'absolute',
-    right: 130,
-    bottom: 50,
-    backgroundColor: 'transparent',
-    color: '#FFF',
-    fontWeight: '600',
-    fontSize: 23,
-    marginTop: 50,
-  },
-  flip: {
-    position: 'absolute',
-    right: 130,
-    bottom: 100,
-    backgroundColor: 'transparent',
-    fontWeight: '600',
-    color: '#FFF',
-    fontSize: 23,
-    marginTop: 50,
-  },
-  save: {
-    position: 'absolute',
-    left: 20,
-    bottom: 50,
-    backgroundColor: 'transparent',
-    color: '#FFF',
-    fontWeight: '600',
-    fontSize: 23,
-    marginTop: 50,
-  },
-  button: {
-    height: 50,
-    width: 50,
   },
   rightHand: {
     flexDirection: 'column',

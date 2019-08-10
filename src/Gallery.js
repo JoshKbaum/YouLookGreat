@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  Button,
   Image,
   View,
   Text,
@@ -10,7 +9,6 @@ import {
 } from 'react-native';
 import { Permissions, Constants } from 'expo';
 import styles from './styles';
-
 import SelectedPhoto from './SelectedPhoto';
 
 export default class Gallery extends React.Component {
@@ -32,7 +30,7 @@ export default class Gallery extends React.Component {
     });
   };
 
-  _getImages = () => {
+  getImages = () => {
     CameraRoll.getPhotos({
       first: this.state.photoPage * 18,
       groupTypes: 'Album',
@@ -52,13 +50,13 @@ export default class Gallery extends React.Component {
   /* LIFECYCLE */
   componentDidMount() {
     this.getPermissionAsync();
-    this._getImages();
+    this.getImages();
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.screenProps.newPhotos !== prevProps.screenProps.newPhotos) {
       console.log('gallery state is firing');
-      this._getImages();
+      this.getImages();
     }
   }
 
@@ -81,7 +79,6 @@ export default class Gallery extends React.Component {
         {this.state.fontLoaded ? (
           <View>
             <Text style={[styles.headline, { paddingTop: 20, fontFamily: 'Heavitas' }]}>Gallery</Text>
-            {/* <Button title="load images from YLG folder" onPress={this._getImages} /> */}
             {images && (
               <ScrollView
                 contentContainerStyle={{
@@ -100,7 +97,7 @@ export default class Gallery extends React.Component {
                           uri: photo.node.image.uri,
                         });
                         // photo.node.image.filename = 'tom';
-                        console.log('this is what the info is', photo);
+                        // console.log('this is what the info is', photo);
                       }}
                     >
                       <Image
@@ -123,7 +120,7 @@ export default class Gallery extends React.Component {
                       await this.setState({
                         photoPage: this.state.photoPage - 1,
                       });
-                      this._getImages();
+                      this.getImages();
                     }}
                   >
                     Less
@@ -136,7 +133,7 @@ export default class Gallery extends React.Component {
                       await this.setState({
                         photoPage: this.state.photoPage + 1,
                       });
-                      this._getImages();
+                      this.getImages();
                     }}
                   >
                     More

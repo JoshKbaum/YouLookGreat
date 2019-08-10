@@ -15,7 +15,7 @@ export default class App extends React.Component {
     };
   }
 
-//  FUNCTIONS
+/*  FUNCTIONS */
   changeRange = newNumbers => {
     this.setState({
       values: newNumbers,
