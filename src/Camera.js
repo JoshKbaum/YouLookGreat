@@ -2,18 +2,8 @@ import React from 'react';
 import { Camera, Permissions, Audio } from 'expo';
 import {
   View,
-  Text,
-  TouchableHighlight,
   StyleSheet,
-  Dimensions,
 } from 'react-native';
-import { Icon } from 'native-base';
-import {
-  Ionicons,
-  AntDesign,
-  Feather,
-  MaterialIcons,
-} from '@expo/vector-icons';
 import Preview from './Preview';
 import Capture from './Capture';
 
@@ -160,196 +150,7 @@ export default class CameraComp extends React.Component {
     }
   }
 
-  // Capture() {
-  //   const {
-  //     hasCameraPermission,
-  //     flashMode,
-  //     leftHanded,
-  //     girl,
-  //     mute,
-  //     zoom,
-  //   } = this.state;
-
-  //   if (hasCameraPermission === null) {
-  //     return <View />;
-  //   } else if (hasCameraPermission === false) {
-  //     return <Text> No access to camera </Text>;
-  //   }
-  //   return (
-  //     <Camera
-  //       ref={camera => {
-  //         this.camera = camera;
-  //       }}
-  //       style={styles.preview}
-  //       flashMode={flashMode}
-  //       type={this.state.cameraType}
-  //       zoom={zoom}
-  //     >
-  //       {/* HUD */}
-  //       <View style={[leftHanded ? styles.leftHand : styles.rightHand]}>
-  //         {/* SETTINGS BUTTON */}
-  //         <TouchableHighlight
-  //           style={{
-  //             width: 35,
-  //             height: 35,
-  //             backgroundColor: 'lightcoral',
-  //             marginTop: 170,
-  //           }}
-  //           onPress={() => this.props.navigation.navigate('Settings')}
-  //         >
-  //           <View style={{ alignItems: 'center' }}>
-  //             <AntDesign
-  //               name="setting"
-  //               size={30}
-  //               style={{
-  //                 color: 'white',
-  //                 fontWeight: 'bold',
-  //                 marginTop: 2,
-  //                 marginLeft: 0.5,
-  //               }}
-  //             />
-  //           </View>
-  //         </TouchableHighlight>
-  //         {/* VOLUME BUTTON */}
-  //         <TouchableHighlight
-  //           style={{ width: 35, height: 35, backgroundColor: 'goldenrod' }}
-  //           onPress={() => {
-  //             this.setState({
-  //               mute: mute === true ? false : true,
-  //             });
-  //           }}
-  //         >
-  //           <View style={{ alignItems: 'center' }}>
-  //             <Feather
-  //               name={mute == true ? 'volume' : 'volume-x'}
-  //               size={32}
-  //               style={{
-  //                 color: 'white',
-  //                 fontWeight: 'bold',
-  //               }}
-  //             />
-  //           </View>
-  //         </TouchableHighlight>
-  //         {/* GALLERY BUTTON */}
-  //         <TouchableHighlight
-  //           style={{ width: 35, height: 35, backgroundColor: 'darkolivegreen' }}
-  //           onPress={() => this.props.navigation.navigate('Gallery')}
-  //         >
-  //           <View style={{ alignItems: 'center' }}>
-  //             <Icon
-  //               name="md-images"
-  //               style={{
-  //                 color: 'white',
-  //                 marginTop: 1.4,
-  //                 marginLeft: 1,
-  //               }}
-  //             />
-  //           </View>
-  //         </TouchableHighlight>
-  //         {/* CAMERA TYPE BUTTON */}
-  //         <TouchableHighlight
-  //           style={{ width: 35, height: 35, backgroundColor: 'pink' }}
-  //           onPress={() => {
-  //             this.setState({
-  //               cameraType:
-  //                 this.state.cameraType === Camera.Constants.Type.back
-  //                   ? Camera.Constants.Type.front
-  //                   : Camera.Constants.Type.back,
-  //               zoom: this.state.zoom === 0.1 ? 0 : 0,
-  //             });
-  //           }}
-  //         >
-  //           <View style={{ alignItems: 'center' }}>
-  //             <Ionicons
-  //               name="md-reverse-camera"
-  //               size={30}
-  //               style={{
-  //                 color: 'white',
-  //                 fontWeight: 'bold',
-  //                 marginTop: 1.5,
-  //               }}
-  //             />
-  //           </View>
-  //         </TouchableHighlight>
-  //         {/* FLASH BUTTON */}
-  //         <TouchableHighlight
-  //           style={{ width: 35, height: 35, backgroundColor: 'darkslateblue' }}
-  //           onPress={() =>
-  //             this.setFlashMode(
-  //               flashMode === Camera.Constants.FlashMode.on
-  //                 ? Camera.Constants.FlashMode.off
-  //                 : Camera.Constants.FlashMode.on
-  //             )
-  //           }
-  //         >
-  //           <View style={{ alignItems: 'center' }}>
-  //             <MaterialIcons
-  //               name={
-  //                 flashMode == Camera.Constants.FlashMode.on
-  //                   ? 'flash-on'
-  //                   : 'flash-off'
-  //               }
-  //               size={30}
-  //               style={{
-  //                 color: 'white',
-  //                 fontWeight: 'bold',
-  //                 marginTop: 3,
-  //                 marginLeft: 2,
-  //               }}
-  //             />
-  //           </View>
-  //         </TouchableHighlight>
-  //         {/* BACK ONLY / ZOOM BUTTON */}
-  //         {this.state.cameraType === Camera.Constants.Type.back ? (
-  //           <TouchableHighlight
-  //             style={{ width: 35, height: 35, backgroundColor: 'lightcoral' }}
-  //             onPress={() => {
-  //               this.setState({
-  //                 zoom: this.state.zoom === 0 ? 0.1 : 0,
-  //               });
-  //             }}
-  //           >
-  //             <View style={{ alignItems: 'center' }}>
-  //               <Feather
-  //                 name={zoom == 0 ? 'zoom-in' : 'zoom-out'}
-  //                 size={30}
-  //                 style={{
-  //                   color: 'white',
-  //                   fontWeight: 'bold',
-  //                   marginTop: 1,
-  //                   marginLeft: 1,
-  //                 }}
-  //               />
-  //             </View>
-  //           </TouchableHighlight>
-  //         ) : null}
-  //       </View>
-  //       {/* CAPTURE PHOTO BUTTON */}
-  //       <View
-  //         style={{
-  //           flexDirection: 'row',
-  //           justifyContent: 'center',
-  //           paddingHorizontal: 10,
-  //           marginBottom: 15,
-  //           zIndex: 1,
-  //         }}
-  //       >
-  //         <TouchableHighlight
-  //           style={styles.capture}
-  //           onPress={this.takePicture.bind(this)}
-  //           // COME BACK TO THIS
-  //           underlayColor="rgba(255, 255, 255, 0.5)"
-  //         >
-  //           <View />
-  //         </TouchableHighlight>
-  //       </View>
-  //     </Camera>
-  //   );
-  // }
-
   render() {
-    console.log('======', this.props);
-
     return (
       <View style={styles.container}>
         {this.state.path ? (
@@ -388,43 +189,12 @@ export default class CameraComp extends React.Component {
     );
   }
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'white',
-  },
-  preview: {
-    flex: 1,
-    justifyContent: 'space-between',
-    height: Dimensions.get('window').height,
-    width: Dimensions.get('window').width,
-  },
-  capture: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
-    borderWidth: 5,
-    borderColor: '#FFF',
-    marginBottom: 15,
-  },
-  rightHand: {
-    flexDirection: 'column',
-    alignItems: 'flex-end', //right
-    justifyContent: 'center',
-    //distance from the edge of screen
-    paddingHorizontal: 5,
-    marginBottom: 15,
-    height: Dimensions.get('window').height - 100,
-  },
-  leftHand: {
-    flexDirection: 'column',
-    alignItems: 'flex-start', // left
-    justifyContent: 'center',
-    //distance from the edge of screen
-    paddingHorizontal: 5,
-    marginBottom: 15,
-    height: Dimensions.get('window').height - 100,
-  },
-});
+  }
+})
