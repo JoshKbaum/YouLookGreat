@@ -187,6 +187,7 @@ const Capture = props => {
 export default Capture;
 
 const styles = StyleSheet.create({
+
   preview: {
     flex: 1,
     justifyContent: 'space-between',

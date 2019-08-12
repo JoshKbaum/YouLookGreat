@@ -1,11 +1,26 @@
 import React from 'react';
-import { Image, Text, View, StyleSheet, Dimensions } from 'react-native';
+import {
+  Image,
+  Text,
+  View,
+  StyleSheet,
+  Dimensions,
+  TouchableHighlight,
+} from 'react-native';
+import {
+  Ionicons,
+  AntDesign,
+  Feather,
+  MaterialIcons,
+  FontAwesome,
+  Octicons,
+} from '@expo/vector-icons';
 import FadeIn from 'react-native-fade-in-image';
 import { MediaLibrary } from 'expo';
 
 const Preview = props => {
   return (
-    <View>
+    <View >
       <FadeIn>
         <Image
           source={{ uri: props.cameraProps.uri }}
@@ -15,51 +30,109 @@ const Preview = props => {
           ]}
         />
       </FadeIn>
-      {/* CANCEL BUTTON */}
-      <Text
-        style={styles.cancel}
-        onPress={() => props.cameraProps.cancelPhoto()}
-      >
-        Cancel
-      </Text>
-      {/* FLIP BUTTON */}
-      <Text style={styles.flip} onPress={() => props.cameraProps.flipPhoto()}>
-        Flip
-      </Text>
-      {/* REPEAT BUTTON */}
-      <Text
-        style={styles.repeat}
-        onPress={() => {
-          props.cameraProps.playCompliment();
-        }}
-      >
-        Repeat
-      </Text>
-      {/* SAVE BUTTON */}
-      <Text
-        style={styles.save}
-        onPress={async () => {
-          //save to camera roll and copy to 'YLG' album
-          let photo = await MediaLibrary.createAssetAsync(
-            props.cameraProps.path
-          );
-          // photo.filename = 'tomtom'
-          //  console.log('this photo info is saved', photo)
-          const album = await MediaLibrary.getAlbumAsync('You Look Great');
-          // console.log('-=========', album)
-          if (album === null) {
-            await MediaLibrary.createAlbumAsync('You Look Great', photo, false);
-          } else {
-            MediaLibrary.addAssetsToAlbumAsync([photo], album, true);
-          }
-          //this may not work
-          props.cameraProps.refreshGallery();
-          // console.log(']]', this.state.path, album)
-          props.cameraProps.cancelPhoto();
-        }}
-      >
-        Save
-      </Text>
+      {/* HUD */}
+      <View style={styles.hud}>
+        {/* SAVE BUTTON */}
+        <TouchableHighlight
+          style={{
+            width: 35,
+            height: 35,
+            backgroundColor: 'pink',
+            // position: 'absolute',
+            // bottom: 45,
+          }}
+          onPress={async () => {
+            //save to camera roll and copy to 'YLG' album
+            let photo = await MediaLibrary.createAssetAsync(
+              props.cameraProps.path
+            );
+            // photo.filename = 'tomtom'
+            //  console.log('this photo info is saved', photo)
+            const album = await MediaLibrary.getAlbumAsync('You Look Great');
+            // console.log('-=========', album)
+            if (album === null) {
+              await MediaLibrary.createAlbumAsync(
+                'You Look Great',
+                photo,
+                false
+              );
+            } else {
+              MediaLibrary.addAssetsToAlbumAsync([photo], album, true);
+            }
+            //this may not work
+            props.cameraProps.refreshGallery();
+            // console.log(']]', this.state.path, album)
+            props.cameraProps.cancelPhoto();
+          }}
+        >
+          <View style={{ alignItems: 'center' }}>
+            <Feather
+              name="save"
+              size={30}
+              style={{
+                color: 'white',
+                fontWeight: 'bold',
+                marginTop: 1.5,
+                marginLeft: 1
+              }}
+            />
+          </View>
+        </TouchableHighlight>
+        {/* FLIP */}
+        <TouchableHighlight
+          style={{ width: 35, height: 35, backgroundColor: 'goldenrod'}}
+          onPress={() => props.cameraProps.flipPhoto()}
+        >
+          <View style={{ alignItems: 'center' }}>
+            <Octicons
+              name="mirror"
+              size={30}
+              style={{
+                color: 'white',
+                fontWeight: 'bold',
+                marginTop: 2,
+                marginLeft: 1
+              }}
+            />
+          </View>
+        </TouchableHighlight>
+        {/* REPEAT */}
+        <TouchableHighlight
+          style={{ width: 35, height: 35, backgroundColor: 'darkolivegreen'}}
+          onPress={() => {
+            props.cameraProps.playCompliment();
+          }}
+        >
+          <View style={{ alignItems: 'center' }}>
+            <FontAwesome
+              name="repeat"
+              size={30}
+              style={{
+                color: 'white',
+                fontWeight: 'bold',
+                marginTop: 2,
+              }}
+            />
+          </View>
+        </TouchableHighlight>
+        {/* CANCEL */}
+        <TouchableHighlight
+          style={{ width: 35, height: 35, backgroundColor: 'darkslateblue'}}
+          onPress={() => props.cameraProps.cancelPhoto()}
+        >
+          <View style={{ alignItems: 'center' }}>
+            <FontAwesome
+              name="remove"
+              size={32}
+              style={{
+                color: 'white',
+                fontWeight: 'bold',
+                marginLeft: 1
+              }}
+            />
+          </View>
+        </TouchableHighlight>
+      </View>
     </View>
   );
 };
@@ -67,6 +140,14 @@ const Preview = props => {
 export default Preview;
 
 const styles = StyleSheet.create({
+  hud: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    height: Dimensions.get('window').height,
+    width: Dimensions.get('window').width,
+    bottom: 45
+  },
   preview: {
     flex: 1,
     justifyContent: 'space-between',
@@ -119,5 +200,14 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 23,
     marginTop: 50,
+  },
+  rightHand: {
+    flexDirection: 'row',
+    alignItems: 'flex-end', //right
+    justifyContent: 'center',
+    //distance from the edge of screen
+    paddingHorizontal: 5,
+    marginBottom: 15,
+    height: Dimensions.get('window').height - 100,
   },
 });
