@@ -1,9 +1,6 @@
 import React from 'react';
-import { Camera, Permissions, Audio } from 'expo';
-import {
-  View,
-  StyleSheet,
-} from 'react-native';
+import { Camera, Permissions, Audio, MediaLibrary } from 'expo';
+import { View, StyleSheet, AsyncStorage } from 'react-native';
 import Preview from './Preview';
 import Capture from './Capture';
 
@@ -54,8 +51,7 @@ export default class CameraComp extends React.Component {
       const data = await this.camera.takePictureAsync();
       this.setState({ path: data.uri });
       this.pickCompliment();
-      // console.log('this is the photo data', data)
-      // console.log('[][][][][', this.state.path)
+      console.log('1) this is the uri', data.uri);
     } catch (err) {
       console.log('err: ', err);
     }
@@ -124,6 +120,43 @@ export default class CameraComp extends React.Component {
     this.camera = ref;
   };
 
+  savePhoto = async () => {
+    //save to camera roll and copy to 'YLG' album
+    let photo = await MediaLibrary.createAssetAsync(this.state.path);
+    const album = await MediaLibrary.getAlbumAsync('You Look Great');
+    if (album === null) {
+      await MediaLibrary.createAlbumAsync('You Look Great', photo, false);
+    } else {
+      MediaLibrary.addAssetsToAlbumAsync([photo], album, true);
+    }
+    // to save the compliment with the photo
+    let photoFilename = this.removePath(this.state.path);
+    this.saveCompliment(photoFilename);
+    // wipe the slate clean after all saving is done
+    this.props.screenProps.refreshGallery();
+    this.cancelPhoto();
+  };
+
+ saveCompliment = async filename => {
+    try {
+      await AsyncStorage.setItem(
+        filename,
+        this.state.compliment.toString()
+      );
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+   // function to trim path off of string to keep only filename
+   removePath = str => {
+    return str
+      .split('\\')
+      .pop()
+      .split('/')
+      .pop();
+  };
+
   /* LIFECYCLE */
   async componentDidMount() {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
@@ -150,6 +183,7 @@ export default class CameraComp extends React.Component {
     }
   }
 
+ 
   render() {
     return (
       <View style={styles.container}>
@@ -158,11 +192,10 @@ export default class CameraComp extends React.Component {
             cameraProps={{
               uri: this.state.path,
               playCompliment: this.playCompliment,
-              path: this.state.path,
               flip: this.state.flip,
-              refreshGallery: this.props.screenProps.refreshGallery,
               cancelPhoto: this.cancelPhoto,
               flipPhoto: this.flipPhoto,
+              savePhoto: this.savePhoto,
             }}
           />
         ) : (
@@ -181,7 +214,7 @@ export default class CameraComp extends React.Component {
               changeCameraType: this.changeCameraType,
               changeFlash: this.changeFlash,
               changeZoom: this.changeZoom,
-              setRef: this.setRef
+              setRef: this.setRef,
             }}
           />
         )}
@@ -196,5 +229,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'white',
-  }
-})
+  },
+});

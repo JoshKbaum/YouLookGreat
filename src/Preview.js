@@ -1,26 +1,18 @@
 import React from 'react';
 import {
   Image,
-  Text,
   View,
   StyleSheet,
   Dimensions,
   TouchableHighlight,
 } from 'react-native';
-import {
-  Ionicons,
-  AntDesign,
-  Feather,
-  MaterialIcons,
-  FontAwesome,
-  Octicons,
-} from '@expo/vector-icons';
+import { Feather, FontAwesome, Octicons } from '@expo/vector-icons';
 import FadeIn from 'react-native-fade-in-image';
-import { MediaLibrary } from 'expo';
 
 const Preview = props => {
+  // console.log('______', props.cameraProps);
   return (
-    <View >
+    <View>
       <FadeIn>
         <Image
           source={{ uri: props.cameraProps.uri }}
@@ -38,31 +30,9 @@ const Preview = props => {
             width: 35,
             height: 35,
             backgroundColor: 'pink',
-            // position: 'absolute',
-            // bottom: 45,
           }}
-          onPress={async () => {
-            //save to camera roll and copy to 'YLG' album
-            let photo = await MediaLibrary.createAssetAsync(
-              props.cameraProps.path
-            );
-            // photo.filename = 'tomtom'
-            //  console.log('this photo info is saved', photo)
-            const album = await MediaLibrary.getAlbumAsync('You Look Great');
-            // console.log('-=========', album)
-            if (album === null) {
-              await MediaLibrary.createAlbumAsync(
-                'You Look Great',
-                photo,
-                false
-              );
-            } else {
-              MediaLibrary.addAssetsToAlbumAsync([photo], album, true);
-            }
-            //this may not work
-            props.cameraProps.refreshGallery();
-            // console.log(']]', this.state.path, album)
-            props.cameraProps.cancelPhoto();
+          onPress={() => {
+             props.cameraProps.savePhoto();
           }}
         >
           <View style={{ alignItems: 'center' }}>
@@ -73,14 +43,14 @@ const Preview = props => {
                 color: 'white',
                 fontWeight: 'bold',
                 marginTop: 1.5,
-                marginLeft: 1
+                marginLeft: 1,
               }}
             />
           </View>
         </TouchableHighlight>
         {/* FLIP */}
         <TouchableHighlight
-          style={{ width: 35, height: 35, backgroundColor: 'goldenrod'}}
+          style={{ width: 35, height: 35, backgroundColor: 'goldenrod' }}
           onPress={() => props.cameraProps.flipPhoto()}
         >
           <View style={{ alignItems: 'center' }}>
@@ -91,14 +61,14 @@ const Preview = props => {
                 color: 'white',
                 fontWeight: 'bold',
                 marginTop: 2,
-                marginLeft: 1
+                marginLeft: 1,
               }}
             />
           </View>
         </TouchableHighlight>
         {/* REPEAT */}
         <TouchableHighlight
-          style={{ width: 35, height: 35, backgroundColor: 'darkolivegreen'}}
+          style={{ width: 35, height: 35, backgroundColor: 'darkolivegreen' }}
           onPress={() => {
             props.cameraProps.playCompliment();
           }}
@@ -117,7 +87,7 @@ const Preview = props => {
         </TouchableHighlight>
         {/* CANCEL */}
         <TouchableHighlight
-          style={{ width: 35, height: 35, backgroundColor: 'darkslateblue'}}
+          style={{ width: 35, height: 35, backgroundColor: 'darkslateblue' }}
           onPress={() => props.cameraProps.cancelPhoto()}
         >
           <View style={{ alignItems: 'center' }}>
@@ -127,7 +97,7 @@ const Preview = props => {
               style={{
                 color: 'white',
                 fontWeight: 'bold',
-                marginLeft: 1
+                marginLeft: 1,
               }}
             />
           </View>
@@ -146,7 +116,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: Dimensions.get('window').height,
     width: Dimensions.get('window').width,
-    bottom: 45
+    bottom: 45,
   },
   preview: {
     flex: 1,

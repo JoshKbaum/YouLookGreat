@@ -6,8 +6,9 @@ import {
   CameraRoll,
   ScrollView,
   TouchableHighlight,
+  AsyncStorage,
 } from 'react-native';
-import { Permissions, Constants } from 'expo';
+import { Permissions, Constants, Audio } from 'expo';
 import styles from './styles';
 import SelectedPhoto from './SelectedPhoto';
 
@@ -20,6 +21,7 @@ export default class Gallery extends React.Component {
       uri: '',
       photoPage: 1,
       fontLoaded: this.props.screenProps.fontLoaded,
+      filename: null,
     };
   }
 
@@ -47,6 +49,25 @@ export default class Gallery extends React.Component {
     }
   };
 
+  loadCompliment = async (photo) => {
+    try {
+      const value = await AsyncStorage.getItem(photo);
+      if (value !== null) {
+        this.replayCompliment(value);
+        // console.log('this is the data', value);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  replayCompliment = async loadedCompliment => {
+    const { sound } = await Audio.Sound.createAsync(+loadedCompliment, {
+      shouldPlay: true,
+      isLooping: false,
+    });
+    this.sound = sound;
+  };
+
   /* LIFECYCLE */
   componentDidMount() {
     this.getPermissionAsync();
@@ -61,7 +82,7 @@ export default class Gallery extends React.Component {
   }
 
   render() {
-    let { showSelectedPhoto, uri, images } = this.state;
+    let { showSelectedPhoto, uri, images, filename } = this.state;
     if (showSelectedPhoto && this.state.fontLoaded) {
       return (
         <SelectedPhoto
@@ -69,6 +90,8 @@ export default class Gallery extends React.Component {
             goBackToGallery: this.goBackToGallery,
             uri: this.state.uri,
             showSelectedPhoto: this.state.showSelectedPhoto,
+            filename: this.state.filename,
+            loadCompliment: this.loadCompliment,
           }}
         />
       );
@@ -78,7 +101,14 @@ export default class Gallery extends React.Component {
       <View style={styles.gallery}>
         {this.state.fontLoaded ? (
           <View>
-            <Text style={[styles.headline, { paddingTop: 20, fontFamily: 'Heavitas' }]}>Gallery</Text>
+            <Text
+              style={[
+                styles.headline,
+                { paddingTop: 20, fontFamily: 'Heavitas' },
+              ]}
+            >
+              Gallery
+            </Text>
             {images && (
               <ScrollView
                 contentContainerStyle={{
@@ -95,9 +125,8 @@ export default class Gallery extends React.Component {
                         this.setState({
                           showSelectedPhoto: true,
                           uri: photo.node.image.uri,
+                          filename: photo.node.image.filename,
                         });
-                        // photo.node.image.filename = 'tom';
-                        // console.log('this is what the info is', photo);
                       }}
                     >
                       <Image
@@ -108,6 +137,7 @@ export default class Gallery extends React.Component {
                           marginLeft: 3,
                           marginRight: 3,
                         }}
+                        // path to URI, maybe save filename too so that it is ready to be called in the selected photo component
                         source={{ uri: photo.node.image.uri }}
                       />
                     </TouchableHighlight>
@@ -115,7 +145,10 @@ export default class Gallery extends React.Component {
                 })}
                 {this.state.photoPage > 1 && (
                   <Text
-                    style={[styles.text, { paddingRight: 8, fontFamily: 'Heavitas' }]}
+                    style={[
+                      styles.text,
+                      { paddingRight: 8, fontFamily: 'Heavitas' },
+                    ]}
                     onPress={async () => {
                       await this.setState({
                         photoPage: this.state.photoPage - 1,
@@ -128,7 +161,7 @@ export default class Gallery extends React.Component {
                 )}
                 {this.state.images.length >= this.state.photoPage * 18 && (
                   <Text
-                    style={[styles.text, {fontFamily: 'Heavitas'}]}
+                    style={[styles.text, { fontFamily: 'Heavitas' }]}
                     onPress={async () => {
                       await this.setState({
                         photoPage: this.state.photoPage + 1,
@@ -146,7 +179,7 @@ export default class Gallery extends React.Component {
               onPress={() => {
                 this.props.navigation.navigate('Camera');
               }}
-              style={[styles.text, {fontFamily: 'Heavitas'}]}
+              style={[styles.text, { fontFamily: 'Heavitas' }]}
             >
               back to camera
             </Text>
