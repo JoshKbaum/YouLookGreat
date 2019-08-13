@@ -11,11 +11,13 @@ _Currently a Work In Progress. An iOS mobile app that compliments you when you t
 - `expo start` in terminal.
 - Scan QR code with your iOS device to launch app on device.
 
-## Demo GIF
+## Demo GIFs
 
 <p align="center">
-<img src="assets/readme/YLGdemo.gif" width="300"></p>
-
+<img src="assets/readme/demo1.gif" width="320">
+<img src="assets/readme/demo2.gif" width="320">
+<img src="assets/readme/demo3.gif" width="320">
+</p>
 
 ## Dependencies
 
