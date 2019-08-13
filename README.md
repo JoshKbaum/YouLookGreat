@@ -14,9 +14,9 @@ _Currently a Work In Progress. An iOS mobile app that compliments you when you t
 ## Demo GIFs
 
 <p align="center">
-<img src="assets/readme/demo1.gif" width="300">
-<img src="assets/readme/demo2.gif" width="300">
-<img src="assets/readme/demo3.gif" width="300">
+<img src="assets/readme/demo1.gif" width="290">
+<img src="assets/readme/demo2.gif" width="290">
+<img src="assets/readme/demo3.gif" width="290">
 </p>
 
 ## Dependencies
