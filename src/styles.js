@@ -2,12 +2,6 @@ import { StyleSheet, Dimensions } from 'react-native';
 const { width: winWidth, height: winHeight } = Dimensions.get('window');
 
 export default StyleSheet.create({
-  slideDefault: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'darkslateblue',
-  },
   settings: {
     flex: 1,
     justifyContent: 'center',
@@ -31,12 +25,12 @@ export default StyleSheet.create({
     fontWeight: 'bold',
     textDecorationLine: 'underline',
     textAlign: 'center',
-    marginBottom: 10
+    marginBottom: 10,
   },
-  preview: {
+  revisit: {
     height: winHeight,
     width: winWidth,
-    position: 'absolute',
+    // position: 'absolute',
     left: 0,
     top: 0,
     right: 0,
@@ -46,12 +40,6 @@ export default StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  bottomToolbar: {
-    width: winWidth,
-    position: 'absolute',
-    height: 100,
-    bottom: 0,
   },
   captureBtn: {
     width: 60,
@@ -72,19 +60,13 @@ export default StyleSheet.create({
     backgroundColor: 'red',
     borderColor: 'transparent',
   },
-  galleryContainer: {
-    height: winHeight,
-    width: winWidth,
-    zIndex: 1,
-  },
-  galleryImageContainer: {
-    height: winHeight,
-    width: winWidth,
-  },
-  galleryImage: {
-    height: winHeight,
-    width: winWidth,
-    zIndex: 2,
+  hud: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    height: Dimensions.get('window').height,
+    width: Dimensions.get('window').width,
+    bottom: 45,
   },
   button: {
     alignItems: 'center',
@@ -96,5 +78,91 @@ export default StyleSheet.create({
   image: {
     height: 300,
     width: 200,
+  },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'white',
+  },
+  preview: {
+    flex: 1,
+    justifyContent: 'space-between',
+    height: Dimensions.get('window').height,
+    width: Dimensions.get('window').width,
+  },
+  mirror: {
+    flex: 1,
+    justifyContent: 'space-between',
+    height: Dimensions.get('window').height,
+    width: Dimensions.get('window').width,
+    transform: [{ rotateY: '180deg' }],
+  },
+  cancel: {
+    position: 'absolute',
+    right: 20,
+    bottom: 50,
+    backgroundColor: 'transparent',
+    color: '#FFF',
+    fontWeight: '600',
+    fontSize: 23,
+    marginTop: 50,
+  },
+  repeat: {
+    position: 'absolute',
+    right: 130,
+    bottom: 50,
+    backgroundColor: 'transparent',
+    color: '#FFF',
+    fontWeight: '600',
+    fontSize: 23,
+    marginTop: 50,
+  },
+  flip: {
+    position: 'absolute',
+    right: 130,
+    bottom: 100,
+    backgroundColor: 'transparent',
+    fontWeight: '600',
+    color: '#FFF',
+    fontSize: 23,
+    marginTop: 50,
+  },
+  save: {
+    position: 'absolute',
+    left: 20,
+    bottom: 50,
+    backgroundColor: 'transparent',
+    color: '#FFF',
+    fontWeight: '600',
+    fontSize: 23,
+    marginTop: 50,
+  },
+  rightHand: {
+    flexDirection: 'column',
+    alignItems: 'flex-end', //right
+    justifyContent: 'center',
+    //distance from the edge of screen
+    paddingHorizontal: 5,
+    marginBottom: 15,
+    height: Dimensions.get('window').height - 100,
+  },
+  
+  capture: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    borderWidth: 5,
+    borderColor: '#FFF',
+    marginBottom: 15,
+  },
+  leftHand: {
+    flexDirection: 'column',
+    alignItems: 'flex-start', // left
+    justifyContent: 'center',
+    //distance from the edge of screen
+    paddingHorizontal: 5,
+    marginBottom: 15,
+    height: Dimensions.get('window').height - 100,
   },
 });

@@ -3,6 +3,7 @@ import { Camera, Permissions, Audio, MediaLibrary } from 'expo';
 import { View, StyleSheet, AsyncStorage } from 'react-native';
 import Preview from './Preview';
 import Capture from './Capture';
+import styles from './styles'
 
 // import styles from './styles';
 
@@ -51,7 +52,6 @@ export default class CameraComp extends React.Component {
       const data = await this.camera.takePictureAsync();
       this.setState({ path: data.uri });
       this.pickCompliment();
-      console.log('1) this is the uri', data.uri);
     } catch (err) {
       console.log('err: ', err);
     }
@@ -222,12 +222,3 @@ export default class CameraComp extends React.Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'white',
-  },
-});

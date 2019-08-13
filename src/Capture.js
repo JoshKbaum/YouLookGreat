@@ -2,8 +2,6 @@ import React from 'react';
 import {
   Text,
   View,
-  StyleSheet,
-  Dimensions,
   TouchableHighlight,
 } from 'react-native';
 import { Camera } from 'expo';
@@ -14,6 +12,7 @@ import {
   MaterialIcons,
 } from '@expo/vector-icons';
 import { Icon } from 'native-base';
+import styles from './styles'
 
 const Capture = props => {
   if (props.cameraProps.hasCameraPermission === null) {
@@ -185,39 +184,3 @@ const Capture = props => {
 };
 
 export default Capture;
-
-const styles = StyleSheet.create({
-
-  preview: {
-    flex: 1,
-    justifyContent: 'space-between',
-    height: Dimensions.get('window').height,
-    width: Dimensions.get('window').width,
-  },
-  capture: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
-    borderWidth: 5,
-    borderColor: '#FFF',
-    marginBottom: 15,
-  },
-  rightHand: {
-    flexDirection: 'column',
-    alignItems: 'flex-end', //right
-    justifyContent: 'center',
-    //distance from the edge of screen
-    paddingHorizontal: 5,
-    marginBottom: 15,
-    height: Dimensions.get('window').height - 100,
-  },
-  leftHand: {
-    flexDirection: 'column',
-    alignItems: 'flex-start', // left
-    justifyContent: 'center',
-    //distance from the edge of screen
-    paddingHorizontal: 5,
-    marginBottom: 15,
-    height: Dimensions.get('window').height - 100,
-  },
-});

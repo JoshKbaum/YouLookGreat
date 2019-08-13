@@ -2,12 +2,11 @@ import React from 'react';
 import {
   Image,
   View,
-  StyleSheet,
-  Dimensions,
   TouchableHighlight,
 } from 'react-native';
 import { Feather, FontAwesome, Octicons } from '@expo/vector-icons';
 import FadeIn from 'react-native-fade-in-image';
+import styles from './styles'
 
 const Preview = props => {
   // console.log('______', props.cameraProps);
@@ -108,76 +107,3 @@ const Preview = props => {
 };
 
 export default Preview;
-
-const styles = StyleSheet.create({
-  hud: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    height: Dimensions.get('window').height,
-    width: Dimensions.get('window').width,
-    bottom: 45,
-  },
-  preview: {
-    flex: 1,
-    justifyContent: 'space-between',
-    height: Dimensions.get('window').height,
-    width: Dimensions.get('window').width,
-  },
-  mirror: {
-    flex: 1,
-    justifyContent: 'space-between',
-    height: Dimensions.get('window').height,
-    width: Dimensions.get('window').width,
-    transform: [{ rotateY: '180deg' }],
-  },
-  cancel: {
-    position: 'absolute',
-    right: 20,
-    bottom: 50,
-    backgroundColor: 'transparent',
-    color: '#FFF',
-    fontWeight: '600',
-    fontSize: 23,
-    marginTop: 50,
-  },
-  repeat: {
-    position: 'absolute',
-    right: 130,
-    bottom: 50,
-    backgroundColor: 'transparent',
-    color: '#FFF',
-    fontWeight: '600',
-    fontSize: 23,
-    marginTop: 50,
-  },
-  flip: {
-    position: 'absolute',
-    right: 130,
-    bottom: 100,
-    backgroundColor: 'transparent',
-    fontWeight: '600',
-    color: '#FFF',
-    fontSize: 23,
-    marginTop: 50,
-  },
-  save: {
-    position: 'absolute',
-    left: 20,
-    bottom: 50,
-    backgroundColor: 'transparent',
-    color: '#FFF',
-    fontWeight: '600',
-    fontSize: 23,
-    marginTop: 50,
-  },
-  rightHand: {
-    flexDirection: 'row',
-    alignItems: 'flex-end', //right
-    justifyContent: 'center',
-    //distance from the edge of screen
-    paddingHorizontal: 5,
-    marginBottom: 15,
-    height: Dimensions.get('window').height - 100,
-  },
-});
