@@ -4,25 +4,10 @@ import { View, AsyncStorage } from 'react-native';
 import Preview from './Preview';
 import Capture from './Capture';
 import styles from './styles';
+import boyCompliments from './boyCompliments';
+import girlCompliments from './girlCompliments';
 
-// import styles from './styles';
-
-// [[all, one, sounds],[all, two, sounds], [all, three, sounds]...]
-// will DRY this out once all vocals are recorded and added
-const allSounds = [
-  [require('../assets/audio/1.mp3')],
-  [require('../assets/audio/2.mp3')],
-  [require('../assets/audio/3.mp3')],
-  [require('../assets/audio/4.mp3')],
-  [require('../assets/audio/5.mp3')],
-  [require('../assets/audio/6.mp3')],
-  [require('../assets/audio/7.mp3')],
-  [require('../assets/audio/8.mp3')],
-  [require('../assets/audio/9.mp3')],
-  [require('../assets/audio/10.mp3')],
-];
-
-const expSounds = [[1], [2], [3], [4], [5], [6], [7], [8], [9], [10]];
+let soundBank;
 
 export default class CameraComp extends React.Component {
   constructor(props) {
@@ -41,6 +26,7 @@ export default class CameraComp extends React.Component {
       mute: false,
     };
   }
+
   /* FUNCTIONS */
   setFlashMode = flashMode => this.setState({ flashMode });
 
@@ -58,16 +44,19 @@ export default class CameraComp extends React.Component {
   };
 
   pickCompliment = () => {
-    // console.log('all sounds', allSounds);
-    const soundBank = allSounds
+    // pick voice
+    this.state.girl
+      ? (soundBank = girlCompliments)
+      : (soundBank = boyCompliments);
+    // narrow bank to selected range
+    soundBank = soundBank
       .slice(this.state.values[0] - 1, this.state.values[1])
       .flat();
-    // console.log('values', this.state.values);
-    // console.log('sound bank', soundBank);
-
+    // pick randomly within the selected range
     const compliment = soundBank[Math.floor(Math.random() * soundBank.length)];
+    // note: add a step here once all compliments are uploaded
+    // add selected compliment to state
     this.setState({ compliment: compliment });
-    // console.log('++++', compliment);
     this.playCompliment();
   };
 
@@ -86,20 +75,20 @@ export default class CameraComp extends React.Component {
 
   flipPhoto = () => {
     this.setState({
-      flip: this.state.flip === false ? true : false,
+      flip: !this.state.flip,
     });
   };
 
   muteAudio = () => {
     this.setState({
-      mute: this.state.mute === true ? false : true,
+      mute: !this.state.mute,
     });
   };
 
   changeCameraType = () => {
     this.setState({
       cameraType:
-        this.state.cameraType === Camera.Constants.Type.back
+        !this.state.cameraType === Camera.Constants.Type.back
           ? Camera.Constants.Type.front
           : Camera.Constants.Type.back,
       zoom: this.state.zoom === 0.1 ? 0 : 0,
