@@ -88,8 +88,8 @@ export default class settings extends React.Component {
               buttonTextStyle={{ fontSize: 20 }}
               textRightStyle={{ fontSize: 20 }}
               textLeftStyle={{ fontSize: 20 }}
-              backgroundColorOn="#a0e1e5"
-              backgroundColorOff="#e5e1e0"
+              backgroundColorOn= 'silver' //"#a0e1e5"
+              backgroundColorOff= 'silver'  //"#e5e1e0"
               circleStyle={{
                 width: 45,
                 height: 45,
@@ -100,8 +100,8 @@ export default class settings extends React.Component {
               onPress={() => {
                 this.orientationChange();
               }}
-              circleColorOff="blue"
-              circleColorOn="pink"
+              circleColorOff="darkcyan"
+              circleColorOn="darkgoldenrod"
               duration={500}
             />
             <View
@@ -143,8 +143,8 @@ export default class settings extends React.Component {
               buttonTextStyle={{ fontSize: 20 }}
               textRightStyle={{ fontSize: 20 }}
               textLeftStyle={{ fontSize: 20 }}
-              backgroundColorOn="#a0e1e5"
-              backgroundColorOff="#e5e1e0"
+              backgroundColorOn= 'silver' //"#a0e1e5"
+              backgroundColorOff= 'silver' //"#e5e1e0"
               circleStyle={{
                 width: 45,
                 height: 45,
@@ -155,8 +155,8 @@ export default class settings extends React.Component {
               onPress={() => {
                 this.genderChange();
               }}
-              circleColorOff="blue"
-              circleColorOn="pink"
+              circleColorOff= 'darkcyan' //"blue"
+              circleColorOn="darkgoldenrod"
               duration={500}
             />
             <View

@@ -88,7 +88,7 @@ export default class CameraComp extends React.Component {
   changeCameraType = () => {
     this.setState({
       cameraType:
-        !this.state.cameraType === Camera.Constants.Type.back
+        this.state.cameraType === Camera.Constants.Type.back
           ? Camera.Constants.Type.front
           : Camera.Constants.Type.back,
       zoom: this.state.zoom === 0.1 ? 0 : 0,

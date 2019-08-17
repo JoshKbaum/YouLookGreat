@@ -12,7 +12,7 @@ export default StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'pink',
+    backgroundColor: 'darkcyan',
   },
   text: {
     color: 'white',
@@ -21,7 +21,7 @@ export default StyleSheet.create({
   },
   headline: {
     color: 'white',
-    fontSize: 30,
+    fontSize: 35,
     fontWeight: 'bold',
     textDecorationLine: 'underline',
     textAlign: 'center',
