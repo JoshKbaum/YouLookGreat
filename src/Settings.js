@@ -99,7 +99,6 @@ export default class settings extends React.Component {
               switchOn={!this.state.leftHanded}
               onPress={() => {
                 this.orientationChange();
-                // console.log('+++', this.state);
               }}
               circleColorOff="blue"
               circleColorOn="pink"
@@ -155,7 +154,6 @@ export default class settings extends React.Component {
               switchOn={this.state.girl}
               onPress={() => {
                 this.genderChange();
-                // console.log('+++', this.state);
               }}
               circleColorOff="blue"
               circleColorOn="pink"

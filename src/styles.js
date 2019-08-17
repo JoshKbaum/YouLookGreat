@@ -147,7 +147,6 @@ export default StyleSheet.create({
     marginBottom: 15,
     height: Dimensions.get('window').height - 100,
   },
-  
   capture: {
     width: 70,
     height: 70,

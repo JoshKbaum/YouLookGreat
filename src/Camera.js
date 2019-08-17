@@ -1,9 +1,9 @@
 import React from 'react';
 import { Camera, Permissions, Audio, MediaLibrary } from 'expo';
-import { View, StyleSheet, AsyncStorage } from 'react-native';
+import { View, AsyncStorage } from 'react-native';
 import Preview from './Preview';
 import Capture from './Capture';
-import styles from './styles'
+import styles from './styles';
 
 // import styles from './styles';
 
@@ -58,12 +58,16 @@ export default class CameraComp extends React.Component {
   };
 
   pickCompliment = () => {
+    // console.log('all sounds', allSounds);
     const soundBank = allSounds
       .slice(this.state.values[0] - 1, this.state.values[1])
       .flat();
+    // console.log('values', this.state.values);
+    // console.log('sound bank', soundBank);
+
     const compliment = soundBank[Math.floor(Math.random() * soundBank.length)];
     this.setState({ compliment: compliment });
-    // console.log('++++', compliment)
+    // console.log('++++', compliment);
     this.playCompliment();
   };
 
@@ -137,19 +141,16 @@ export default class CameraComp extends React.Component {
     this.cancelPhoto();
   };
 
- saveCompliment = async filename => {
+  saveCompliment = async filename => {
     try {
-      await AsyncStorage.setItem(
-        filename,
-        this.state.compliment.toString()
-      );
+      await AsyncStorage.setItem(filename, this.state.compliment.toString());
     } catch (error) {
       console.log(error.message);
     }
   };
 
-   // function to trim path off of string to keep only filename
-   removePath = str => {
+  // function to trim path off of string to keep only filename
+  removePath = str => {
     return str
       .split('\\')
       .pop()
@@ -183,7 +184,6 @@ export default class CameraComp extends React.Component {
     }
   }
 
- 
   render() {
     return (
       <View style={styles.container}>

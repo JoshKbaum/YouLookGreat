@@ -49,7 +49,7 @@ export default class Gallery extends React.Component {
     }
   };
 
-  loadCompliment = async (photo) => {
+  loadCompliment = async photo => {
     try {
       const value = await AsyncStorage.getItem(photo);
       if (value !== null) {
@@ -114,7 +114,6 @@ export default class Gallery extends React.Component {
                 contentContainerStyle={{
                   flexDirection: 'row',
                   flexWrap: 'wrap',
-                  paddingTop: 20,
                 }}
               >
                 {this.state.images.map((photo, index) => {
@@ -147,7 +146,7 @@ export default class Gallery extends React.Component {
                   <Text
                     style={[
                       styles.text,
-                      { paddingRight: 8, fontFamily: 'Heavitas' },
+                      { paddingLeft: 50, fontFamily: 'Heavitas' },
                     ]}
                     onPress={async () => {
                       await this.setState({
@@ -161,7 +160,7 @@ export default class Gallery extends React.Component {
                 )}
                 {this.state.images.length >= this.state.photoPage * 18 && (
                   <Text
-                    style={[styles.text, { fontFamily: 'Heavitas' }]}
+                    style={[styles.text, { fontFamily: 'Heavitas', paddingLeft: 30 }]}
                     onPress={async () => {
                       await this.setState({
                         photoPage: this.state.photoPage + 1,
@@ -179,7 +178,7 @@ export default class Gallery extends React.Component {
               onPress={() => {
                 this.props.navigation.navigate('Camera');
               }}
-              style={[styles.text, { fontFamily: 'Heavitas' }]}
+              style={[styles.text, { fontFamily: 'Heavitas', paddingTop: 12, textAlign: 'center' }]}
             >
               back to camera
             </Text>
