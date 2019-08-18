@@ -1,6 +1,7 @@
 import React from 'react';
 import AppNavigator from './AppNavigator';
 import * as Font from 'expo-font';
+import { AsyncStorage } from 'react-native';
 console.disableYellowBox = true;
 
 export default class App extends React.Component {
@@ -15,7 +16,7 @@ export default class App extends React.Component {
     };
   }
 
-/*  FUNCTIONS */
+  /*  FUNCTIONS */
   changeRange = newNumbers => {
     this.setState({
       values: newNumbers,
@@ -36,11 +37,28 @@ export default class App extends React.Component {
     }));
   };
 
+  loadSettings = async key => {
+    try {
+      const jsonSavedSettings = await AsyncStorage.getItem(key);
+      const savedSettings = JSON.parse(jsonSavedSettings);
+      if (savedSettings !== null) {
+        this.setState({
+          girl: savedSettings.girl,
+          leftHanded: savedSettings.leftHanded,
+          values: savedSettings.values,
+        });
+         console.log('this is working', this.state)
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   /* LIFECYCLE */
   async componentDidMount() {
     await Font.loadAsync({
       Heavitas: require('./assets/fonts/Heavitas.ttf'),
     });
+    this.loadSettings('userSettings');
     this.setState({ fontLoaded: true });
   }
 
@@ -56,7 +74,7 @@ export default class App extends React.Component {
           changeHand: this.changeHand,
           newPhotos: this.state.newPhotos,
           refreshGallery: this.refreshGallery,
-          fontLoaded: this.state.fontLoaded
+          fontLoaded: this.state.fontLoaded,
         }}
       />
     );

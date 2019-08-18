@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, AsyncStorage } from 'react-native';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import styles from './styles';
 import SwitchToggle from 'react-native-switch-toggle';
@@ -27,6 +27,14 @@ export default class settings extends React.Component {
     this.setState({
       values,
     });
+  };
+
+  saveSettings = async (key) => {
+    try {
+      await AsyncStorage.setItem(key, JSON.stringify(this.state));
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   // BUTTON TEXT
@@ -233,6 +241,7 @@ export default class settings extends React.Component {
                 this.props.screenProps.changeRange(this.state.values);
                 this.props.screenProps.changeVoice(this.state.girl);
                 this.props.screenProps.changeHand(this.state.leftHanded);
+                this.saveSettings('userSettings')
                 // console.log('this was pressed', this.state);
               }}
               style={[styles.text, { fontFamily: 'Heavitas' }]}
