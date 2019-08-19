@@ -1,7 +1,9 @@
 import React from 'react';
 import AppNavigator from './AppNavigator';
 import * as Font from 'expo-font';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, View, Image } from 'react-native';
+import { SplashScreen, Icon } from 'expo';
+
 console.disableYellowBox = true;
 
 export default class App extends React.Component {
@@ -13,6 +15,7 @@ export default class App extends React.Component {
       girl: false,
       leftHanded: false,
       fontLoaded: false,
+      isReady: false,
     };
   }
 
@@ -36,7 +39,7 @@ export default class App extends React.Component {
       newPhotos: prevState.newPhotos + 1,
     }));
   };
-
+// preload user settings
   loadSettings = async key => {
     try {
       const jsonSavedSettings = await AsyncStorage.getItem(key);
@@ -47,22 +50,47 @@ export default class App extends React.Component {
           leftHanded: savedSettings.leftHanded,
           values: savedSettings.values,
         });
-         console.log('this is working', this.state)
+        // console.log('this is working', this.state);
       }
     } catch (error) {
       console.log(error);
     }
   };
-  /* LIFECYCLE */
-  async componentDidMount() {
-    await Font.loadAsync({
-      Heavitas: require('./assets/fonts/Heavitas.ttf'),
-    });
-    this.loadSettings('userSettings');
+// preload fonts and icons
+  cacheResourcesAsync = async () => {
+    await Promise.all([
+      Font.loadAsync({
+        Heavitas: require('./assets/fonts/Heavitas.ttf'),
+        ...Icon.AntDesign.font,
+        ...Icon.Feather.font,
+        ...Icon.MaterialIcons.font,
+        ...Icon.FontAwesome.font,
+        ...Icon.Octicons.font,
+        ...Icon.Ionicons.font,
+      }),
+    ])
     this.setState({ fontLoaded: true });
+    this.setState({ isReady: true });
+    SplashScreen.hide();
+  };
+
+  /* LIFECYCLE */
+  componentDidMount() {
+    SplashScreen.preventAutoHide();
+    this.loadSettings('userSettings');
   }
 
   render() {
+    if (!this.state.isReady) {
+      return (
+        <View style={{ flex: 1 }}>
+          <Image
+            source={require('./assets/splash.png')}
+            onLoad={this.cacheResourcesAsync}
+          />
+        </View>
+      );
+    }
     return (
       <AppNavigator
         screenProps={{
