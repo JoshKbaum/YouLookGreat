@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Image,
   View,
-  TouchableHighlight,
+  TouchableOpacity,
 } from 'react-native';
 import { Feather, FontAwesome, Octicons } from '@expo/vector-icons';
 import FadeIn from 'react-native-fade-in-image';
@@ -24,7 +24,7 @@ const Preview = props => {
       {/* HUD */}
       <View style={styles.hud}>
         {/* SAVE BUTTON */}
-        <TouchableHighlight
+        <TouchableOpacity
           style={{
             width: 35,
             height: 35,
@@ -46,9 +46,9 @@ const Preview = props => {
               }}
             />
           </View>
-        </TouchableHighlight>
+        </TouchableOpacity>
         {/* FLIP */}
-        <TouchableHighlight
+        <TouchableOpacity
           style={{ width: 35, height: 35, backgroundColor: 'goldenrod' }}
           onPress={() => props.cameraProps.flipPhoto()}
         >
@@ -64,9 +64,9 @@ const Preview = props => {
               }}
             />
           </View>
-        </TouchableHighlight>
+        </TouchableOpacity>
         {/* REPEAT */}
-        <TouchableHighlight
+        <TouchableOpacity
           style={{ width: 35, height: 35, backgroundColor: 'darkolivegreen' }}
           onPress={() => {
             props.cameraProps.playCompliment();
@@ -83,9 +83,9 @@ const Preview = props => {
               }}
             />
           </View>
-        </TouchableHighlight>
+        </TouchableOpacity>
         {/* CANCEL */}
-        <TouchableHighlight
+        <TouchableOpacity
           style={{ width: 35, height: 35, backgroundColor: 'darkslateblue' }}
           onPress={() => props.cameraProps.cancelPhoto()}
         >
@@ -100,7 +100,7 @@ const Preview = props => {
               }}
             />
           </View>
-        </TouchableHighlight>
+        </TouchableOpacity>
       </View>
     </View>
   );

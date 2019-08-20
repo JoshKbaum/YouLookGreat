@@ -1,9 +1,8 @@
 import React from 'react';
-import { Image, View, TouchableHighlight } from 'react-native';
+import { Image, View, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import styles from './styles';
 import { Icon } from 'native-base';
-
 
 const SelectedPhoto = props => {
   return (
@@ -12,7 +11,7 @@ const SelectedPhoto = props => {
       {/* HUD */}
       <View style={styles.hud}>
         {/* REPEAT */}
-        <TouchableHighlight
+        <TouchableOpacity
           style={{
             width: 35,
             height: 35,
@@ -23,7 +22,7 @@ const SelectedPhoto = props => {
           }
         >
           <View style={{ alignItems: 'center' }}>
-          <FontAwesome
+            <FontAwesome
               name="repeat"
               size={30}
               style={{
@@ -33,9 +32,9 @@ const SelectedPhoto = props => {
               }}
             />
           </View>
-        </TouchableHighlight>
+        </TouchableOpacity>
         {/* BACK TO GALLERY */}
-        <TouchableHighlight
+        <TouchableOpacity
           style={{
             width: 35,
             height: 35,
@@ -46,7 +45,7 @@ const SelectedPhoto = props => {
           }}
         >
           <View style={{ alignItems: 'center' }}>
-          <Icon
+            <Icon
               name="md-images"
               style={{
                 color: 'white',
@@ -55,7 +54,7 @@ const SelectedPhoto = props => {
               }}
             />
           </View>
-        </TouchableHighlight>
+        </TouchableOpacity>
       </View>
     </View>
   );

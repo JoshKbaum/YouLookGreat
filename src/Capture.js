@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Text,
   View,
-  TouchableHighlight,
+  TouchableOpacity,
 } from 'react-native';
 import { Camera } from 'expo';
 import {
@@ -37,7 +37,7 @@ const Capture = props => {
         ]}
       >
         {/* SETTINGS BUTTON */}
-        <TouchableHighlight
+        <TouchableOpacity
           style={{
             width: 35,
             height: 35,
@@ -58,9 +58,9 @@ const Capture = props => {
               }}
             />
           </View>
-        </TouchableHighlight>
+        </TouchableOpacity>
         {/* VOLUME BUTTON */}
-        <TouchableHighlight
+        <TouchableOpacity
           style={{ width: 35, height: 35, backgroundColor: 'goldenrod' }}
           onPress={() => {
             props.cameraProps.muteAudio()
@@ -68,7 +68,7 @@ const Capture = props => {
         >
           <View style={{ alignItems: 'center' }}>
             <Feather
-              name={props.cameraProps.mute === true ? 'volume' : 'volume-x'}
+              name={props.cameraProps.mute === true ? 'volume-x' : 'volume-2'}
               size={32}
               style={{
                 color: 'white',
@@ -76,9 +76,9 @@ const Capture = props => {
               }}
             />
           </View>
-        </TouchableHighlight>
+        </TouchableOpacity>
         {/* GALLERY BUTTON */}
-        <TouchableHighlight
+        <TouchableOpacity
           style={{ width: 35, height: 35, backgroundColor: 'darkolivegreen' }}
           onPress={() => props.cameraProps.navigation.navigate('Gallery')}
         >
@@ -92,9 +92,9 @@ const Capture = props => {
               }}
             />
           </View>
-        </TouchableHighlight>
+        </TouchableOpacity>
         {/* CAMERA TYPE BUTTON */}
-        <TouchableHighlight
+        <TouchableOpacity
           style={{ width: 35, height: 35, backgroundColor: 'pink' }}
           onPress={() => {
             props.cameraProps.changeCameraType()
@@ -111,9 +111,9 @@ const Capture = props => {
               }}
             />
           </View>
-        </TouchableHighlight>
+        </TouchableOpacity>
         {/* FLASH BUTTON */}
-        <TouchableHighlight
+        <TouchableOpacity
           style={{ width: 35, height: 35, backgroundColor: 'darkslateblue' }}
           onPress={() =>
             props.cameraProps.changeFlash()
@@ -136,10 +136,10 @@ const Capture = props => {
               }}
             />
           </View>
-        </TouchableHighlight>
+        </TouchableOpacity>
         {/* BACK ONLY / ZOOM BUTTON */}
         {props.cameraProps.cameraType === Camera.Constants.Type.back ? (
-          <TouchableHighlight
+          <TouchableOpacity
             style={{ width: 35, height: 35, backgroundColor: 'lightcoral' }}
             onPress={() => {
               props.cameraProps.changeZoom()
@@ -157,7 +157,7 @@ const Capture = props => {
                 }}
               />
             </View>
-          </TouchableHighlight>
+          </TouchableOpacity>
         ) : null}
       </View>
       {/* CAPTURE PHOTO BUTTON */}
@@ -170,14 +170,14 @@ const Capture = props => {
           zIndex: 1,
         }}
       >
-        <TouchableHighlight
+        <TouchableOpacity
           style={styles.capture}
           onPress={props.cameraProps.takePicture}
           // COME BACK TO THIS
           underlayColor="rgba(255, 255, 255, 0.5)"
         >
           <View />
-        </TouchableHighlight>
+        </TouchableOpacity>
       </View>
     </Camera>
   );
