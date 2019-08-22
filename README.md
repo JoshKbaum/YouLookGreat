@@ -3,7 +3,7 @@
 
 # _You Look Great_
 
-_Currently a Work In Progress. An iOS mobile app that compliments you when you take a selfie.  Functionality is completed, will be recording audio shortly._
+_Currently a Work In Progress. An iOS mobile app that compliments you when you take a selfie.  Functionality is completed, I will be re-recording audio shortly._
 
 ## Setup
 
