@@ -3,12 +3,12 @@
 
 # _You Look Great_
 
-_Currently a Work In Progress. An iOS mobile app that compliments you when you take a selfie._
+_Currently a Work In Progress. An iOS mobile app that compliments you when you take a selfie.  Functionality is completed, will be recording audio shortly._
 
 ## Setup
 
 - Download the expo app on your iOS device.
-- `expo start` in terminal.
+- `npm i` and `expo start` in terminal.
 - Scan QR code with your iOS device to launch app on device.
 
 ## Demo GIFs
