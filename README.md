@@ -7,7 +7,7 @@ _Currently a Work In Progress. An iOS mobile app that compliments you when you t
 
 ## Setup
 
-- Download the expo app on your iOS device.
+- Download the expo app on your iOS device. https://apps.apple.com/us/app/expo-client/id982107779
 - `npm i` and `expo start` in terminal.
 - Scan QR code with your iOS device to launch app on device.
 
