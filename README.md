@@ -32,3 +32,9 @@ _Currently a Work In Progress. An iOS mobile app that compliments you when you t
 *"react-native-swiper": "^1.5.14",*  
 *"react-native-switch-toggle": "^1.1.0",*  
 *"react-navigation": "^3.11.0"*  
+
+## TODO
+
+[] re-record audio  
+[] fix mirror state  
+[] hide HUD option

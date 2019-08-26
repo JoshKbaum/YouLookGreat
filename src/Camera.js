@@ -66,6 +66,15 @@ export default class CameraComp extends React.Component {
       isLooping: false,
       isMuted: this.state.mute,
     });
+    await Audio.setAudioModeAsync({
+      playsInSilentModeIOS: true,
+      allowsRecordingIOS: false,
+      staysActiveInBackground: true,
+      playThroughEarpieceAndroid: true,
+      interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_MIX_WITH_OTHERS,
+      shouldDuckAndroid: true,
+      interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DUCK_OTHERS,
+    });
     this.sound = sound;
   };
 
