@@ -36,6 +36,16 @@ export default StyleSheet.create({
     right: 0,
     bottom: 0,
   },
+  revisitMirror: {
+    transform: [{ rotateY: '180deg' }],
+    height: winHeight,
+    width: winWidth,
+    // position: 'absolute',
+    left: 0,
+    top: 0,
+    right: 0,
+    bottom: 0,
+  },
   alignCenter: {
     flex: 1,
     alignItems: 'center',
