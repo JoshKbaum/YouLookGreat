@@ -185,10 +185,13 @@ export default class settings extends React.Component {
               max={10}
               step={1}
               selectedStyle={{
-                backgroundColor: 'gold',
+                backgroundColor: 'darkgoldenrod',
               }}
               unselectedStyle={{
                 backgroundColor: 'silver',
+              }}
+              trackStyle={{
+                height: 5
               }}
               isMarkersSeparated={true}
               customMarkerLeft={() => {
