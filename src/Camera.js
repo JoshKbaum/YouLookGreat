@@ -99,6 +99,7 @@ export default class CameraComp extends React.Component {
       cameraType:
         this.state.cameraType === Camera.Constants.Type.back
           ? Camera.Constants.Type.front
+          // in here flip the image for front camera
           : Camera.Constants.Type.back,
       zoom: this.state.zoom === 0.1 ? 0 : 0,
     });
