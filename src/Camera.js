@@ -88,6 +88,12 @@ export default class CameraComp extends React.Component {
     });
   };
 
+  resetFlip = () => {
+    this.setState({
+      flip: false
+    });
+  };
+
   muteAudio = () => {
     this.setState({
       mute: !this.state.mute,
@@ -102,6 +108,7 @@ export default class CameraComp extends React.Component {
           // in here flip the image for front camera
           : Camera.Constants.Type.back,
       zoom: this.state.zoom === 0.1 ? 0 : 0,
+      // flip: this.state.flip === false,
     });
   };
 
@@ -195,6 +202,8 @@ export default class CameraComp extends React.Component {
               cancelPhoto: this.cancelPhoto,
               flipPhoto: this.flipPhoto,
               savePhoto: this.savePhoto,
+              cameraType: this.state.cameraType,
+              resetFlip: this.resetFlip,
             }}
           />
         ) : (

@@ -1,25 +1,34 @@
 import React from 'react';
-import {
-  Image,
-  View,
-  TouchableOpacity,
-} from 'react-native';
+import { Image, View, TouchableOpacity } from 'react-native';
 import { Feather, FontAwesome, Octicons } from '@expo/vector-icons';
 import FadeIn from 'react-native-fade-in-image';
-import styles from './styles'
+import styles from './styles';
+import { Camera } from 'expo';
 
 const Preview = props => {
   // console.log('______', props.cameraProps);
   return (
     <View>
       <FadeIn>
-        <Image
-          source={{ uri: props.cameraProps.uri }}
-          style={[
-            styles.preview,
-            props.cameraProps.flip ? styles.mirror : styles.preview,
-          ]}
-        />
+        {props.cameraProps.cameraType === Camera.Constants.Type.front ? (
+          <Image
+            source={{ uri: props.cameraProps.uri }}
+            style={[
+              styles.mirror,
+              props.cameraProps.flip
+                ? { transform: [{ rotateY: '0deg' }] }
+                : styles.mirror,
+            ]}
+          />
+        ) : (
+          <Image
+            source={{ uri: props.cameraProps.uri }}
+            style={[
+              styles.preview,
+              props.cameraProps.flip ? styles.mirror : styles.preview,
+            ]}
+          />
+        )}
       </FadeIn>
       {/* HUD */}
       <View style={styles.hud}>
@@ -31,7 +40,8 @@ const Preview = props => {
             backgroundColor: 'pink',
           }}
           onPress={() => {
-             props.cameraProps.savePhoto();
+            props.cameraProps.savePhoto();
+            props.cameraProps.resetFlip()
           }}
         >
           <View style={{ alignItems: 'center' }}>
@@ -87,7 +97,7 @@ const Preview = props => {
         {/* CANCEL */}
         <TouchableOpacity
           style={{ width: 35, height: 35, backgroundColor: 'darkslateblue' }}
-          onPress={() => props.cameraProps.cancelPhoto()}
+          onPress={() => {props.cameraProps.cancelPhoto(); props.cameraProps.resetFlip()}}
         >
           <View style={{ alignItems: 'center' }}>
             <FontAwesome
