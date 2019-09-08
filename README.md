@@ -36,6 +36,6 @@ _Currently a Work In Progress. An iOS mobile app that compliments you when you t
 ## TODO
 
 [] re-record audio  
-[] flip photo on front camera  
-[] reset flip after done with preview  
+[X] flip photo on front camera  
+[X] reset flip after done with preview  
 [] hide HUD option
